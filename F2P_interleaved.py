@@ -21,7 +21,12 @@ class OriginalPhylipFile(IDSeq):
     """Write phylip file in interleaved format containing original identities
        and their corresponding sequences."""
 
-    def write_original_phylip_file(self):
+    def write_original_phylip_file_sequential(self):
+        with open(self.original_phylip_name, 'w') as phy:
+            for i, j in zip(self.identities, self.sequences):
+                phy.write(i + '\t' + j)
+
+    def write_original_phylip_file_interleaved(self):
         with open(self.original_phylip_name, 'w') as phy:
             for i, j in zip(self.identities, self.sequences):
                 phy.write(i + '\t' + j[0:50] + '\n')
@@ -47,7 +52,12 @@ class UniquePhylipFile(UniqueID):
     """Write phylip file in interleaved format containing original identities
        and their corresponding sequences."""
 
-    def write_unique_phylip_file(self):
+    def write_unique_phylip_file_sequential(self):
+        with open(self.original_phylip_name, 'w') as phy:
+            for i, j in zip(self.identities, self.sequences):
+                phy.write(i + '\t' + j)
+
+    def write_unique_phylip_file_interleaved(self):
         with open(self.unique_phylip_name, 'w') as phy:
             for i, j in zip(self.unique_identities.itervalues(),
                             self.sequences):
@@ -109,6 +119,12 @@ arg_parser.add_argument('fasta_file', type=str, help=('Name of fasta '
                                                       'None if running in '
                                                       'batch mode.')
                         )
+arg_parser.add_argument('-s', '--sequential', help=('Write phylip file in '
+                                                    'sequential format. By '
+                                                    'default, script writes '
+                                                    'in interleaved format.'),
+                        action='store_true'
+                        )
 arg_parser.add_argument('-b', '--batch', help=('Run script in batch mode; '
                                                'i.e. convert all fasta '
                                                'files in directory to '
@@ -128,7 +144,11 @@ else:
 
 for fasta in FastaFile:
     fasta.generate_original_ids_and_seqs()
-    fasta.write_original_phylip_file()
     fasta.generate_unique_ids()
-    fasta.write_unique_phylip_file()
+    if args.sequential:
+        fasta.write_original_phylip_file_sequential()
+        fasta.write_unique_phylip_file_sequential()
+    else:
+        fasta.write_original_phylip_file_interleaved()
+        fasta.write_unique_phylip_file_interleaved()
     fasta.write_dictionary_file()
