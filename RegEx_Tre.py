@@ -47,6 +47,7 @@ class TreFile(RegEx):
         with open(dict_file, 'r') as dfile:
             self.dfile = loadtxt(dfile, dtype=str, delimiter='\t')
         self.new_tre_file = tre_file.replace('.tre', '_subbed.tre')
+        self.registry.append(self)
 
 arg_parser = argparse.ArgumentParser()
 arg_parser.add_argument('tre_file', type=str, help=('Name of tre file to be '
@@ -78,6 +79,5 @@ else:
     TreFile(args.tre_file, args.dict_file)
 
 for tre in TreFile:
-    print(self.tre_file)
     sub_tre_file = tre.substitute()
     tre.write_tre_file(sub_tre_file)
