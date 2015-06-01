@@ -24,7 +24,7 @@ class OriginalPhylipFile(IDSeq):
     def write_original_phylip_file_sequential(self):
         with open(self.original_phylip_name, 'w') as phy:
             for i, j in zip(self.identities, self.sequences):
-                phy.write(i + '\t' + j)
+                phy.write(i + '\t' + j + '\n')
 
     def write_original_phylip_file_interleaved(self):
         with open(self.original_phylip_name, 'w') as phy:
@@ -55,7 +55,7 @@ class UniquePhylipFile(UniqueID):
     def write_unique_phylip_file_sequential(self):
         with open(self.original_phylip_name, 'w') as phy:
             for i, j in zip(self.identities, self.sequences):
-                phy.write(i + '\t' + j)
+                phy.write(i + '\t' + j + '\n')
 
     def write_unique_phylip_file_interleaved(self):
         with open(self.unique_phylip_name, 'w') as phy:
@@ -146,9 +146,11 @@ for fasta in FastaFile:
     fasta.generate_original_ids_and_seqs()
     fasta.generate_unique_ids()
     if args.sequential:
+        print('sequential')
         fasta.write_original_phylip_file_sequential()
         fasta.write_unique_phylip_file_sequential()
     else:
+        print('interleaved')
         fasta.write_original_phylip_file_interleaved()
         fasta.write_unique_phylip_file_interleaved()
     fasta.write_dictionary_file()
