@@ -70,8 +70,8 @@ args = arg_parser.parse_args()
 if args.batch:
     cwd = getcwd()
     fid = listdir(cwd)
-    tre_files = filter(lambda x: '.tre' in x, fid)
-    dict_files = filter(lambda x: '.txt' in x, fid)
+    tre_files = sorted(filter(lambda x: '.tre' in x, fid))
+    dict_files = sorted(filter(lambda x: '.txt' in x, fid))
     for i, j in zip(tre_files, dict_files):
         TreFile(i, j)
 else:
