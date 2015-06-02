@@ -47,6 +47,9 @@ class FastaFile(FileIO):
     """A class in which all the necessary parameters corresponding to each
        respective fasta file."""
 
+    __metaclass__ = IterRegistry
+    registry = []
+
     def __init__(self, fasta_file, rem_file):
         with open(fasta_file, 'r') as fas:
             self.fasta = fas.read()
