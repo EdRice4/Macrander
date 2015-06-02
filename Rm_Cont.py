@@ -18,9 +18,9 @@ class RegEx(object):
 
     def remove_cont(self):
         pattern = self.compile_rm()
-        for i in self.rm:
+        for i in self.fas:
             if bool(pattern.match(i)):
-                self.rm.remove(i)
+                self.fas.remove(i)
 
 
 class FileIO(RegEx):
@@ -28,9 +28,10 @@ class FileIO(RegEx):
     """A class in which file input/output is stored."""
 
     def write_new_fasta(self):
+        new_fasta_seq = '>'.join(self.fas)
         with open(self.new_fasta, 'w') as fas:
             fas.write('>')
-            fas.write(self.rm.join('>'))
+            fas.write(new_fasta_seq)
 
 
 class IterRegistry(type):
@@ -52,7 +53,8 @@ class FastaFile(FileIO):
 
     def __init__(self, fasta_file, rem_file):
         with open(fasta_file, 'r') as fas:
-            self.fasta = fas.read()
+            fas = fas.read()
+            self.fas = (fas[1:]).split('>')
         self.new_fasta = fasta_file.replace('.fasta', '_new.fasta')
         with open(rem_file, 'r') as rem:
             self.rm = rem.readlines()
