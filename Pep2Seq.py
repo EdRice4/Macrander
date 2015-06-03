@@ -11,7 +11,7 @@ class IterRegistry(type):
         return iter(cls.registry)
 
 
-class PepFile():
+class PepFile(object):
 
     """A class in which all the necessary parameters corresponding to each
        respective peptide file are stored."""
@@ -19,12 +19,12 @@ class PepFile():
     __metaclass__ = IterRegistry
     registry = []
 
-    def __init__(self):
-        self.title = 'lol'
+    def __init__(self, pep_file):
+        self.title = pep_file
         self.registry.append(self)
 
 
-class FastaFile():
+class FastaFile(object):
 
     """A class in which all the necessary parameters corresponding to each
        respective fasta file are stored."""
@@ -32,8 +32,8 @@ class FastaFile():
     __metaclass__ = IterRegistry
     registry = []
 
-    def __init__(self):
-        self.title = 'weiners'
+    def __init__(self, fasta_file):
+        self.title = fasta_file
         self.registry.append(self)
 
 arg_parser = argparse.ArgumentParser()
