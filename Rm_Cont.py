@@ -46,7 +46,7 @@ class IterRegistry(type):
 class FastaFile(FileIO):
 
     """A class in which all the necessary parameters corresponding to each
-       respective fasta file."""
+       respective fasta file are stored."""
 
     __metaclass__ = IterRegistry
     registry = []
@@ -61,7 +61,7 @@ class FastaFile(FileIO):
         self.registry.append(self)
 
 arg_parser = argparse.ArgumentParser()
-arg_parser.add_argument('fasta_file', type=str, help=('Name of fasta sequence '
+arg_parser.add_argument('fasta_file', type=str, help=('Name of fasta file'
                                                       'containing sequences '
                                                       'to be removed. Specify '
                                                       'None if running in '
