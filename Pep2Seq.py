@@ -62,7 +62,7 @@ class FileIO(ExtractData):
         with open(self.fas_new, 'w') as fas:
             for i, j in zip(rev_compl_fasta_dict.iterkeys(),
                             rev_compl_fasta_dict.itervalues()):
-                fas.write(i + '\t' + j + '\n')
+                fas.write('>' + i + '\n' + j + '\n')
 
 
 class IterRegistry(type):
