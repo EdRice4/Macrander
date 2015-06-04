@@ -38,7 +38,7 @@ class RegEx(DataParse):
         return pattern
 
 
-class ExtractData(DataParse):
+class ExtractData(RegEx):
 
     """A class in which all data extraction, i.e. the boundary between
        disparate file types, functionality is stored."""
@@ -79,7 +79,7 @@ class IterRegistry(type):
         return iter(cls.registry)
 
 
-class PepFastaFile(object):
+class PepFastaFile(FileIO):
 
     """A class in which all the necessary parameters corresponding to each
        respective peptide file are stored."""
@@ -132,8 +132,7 @@ else:
     PepFastaFile(args.pep_file, args.fasta_file)
 
 for f in PepFastaFile:
-    print(f.pep, f.fas)
-    #params = f.extract_params_from_pep()
-    #fasta_dict = f.split_and_build_dict()
-    #print(params)
-    #print(fasta_dict)
+    params = f.extract_params_from_pep()
+    fasta_dict = f.split_and_build_dict()
+    print(params)
+    print(fasta_dict)
