@@ -34,7 +34,7 @@ class RegEx(DataParse):
     def compile_pattern(self, parameters):
         seq_ids = zip(*parameters)[0]
         pattern = map(lambda x: re.escape(x), seq_ids)
-        pattern = re.comple('|'.join(pattern))
+        pattern = re.compile('|'.join(pattern))
         return pattern
 
 
@@ -132,7 +132,7 @@ else:
     PepFastaFile(args.pep_file, args.fasta_file)
 
 for f in PepFastaFile:
-    params = f.extract_params_from_pep()
+    parameters = f.extract_params_from_pep()
     fasta_dict = f.split_and_build_dict()
-    print(params)
-    print(fasta_dict)
+    seq_id_match_pattern = f.compile_pattern(parameters)
+    print(seq_id_match_pattern)
