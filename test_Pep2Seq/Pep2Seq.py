@@ -9,13 +9,17 @@ class DataParse(object):
     """A class in which all data parsing functionality is stored."""
 
     def extract_params_from_pep(self):
-        params = {}
+        seq_of_int = {}
         pep = filter(lambda x: x[0] == '>', self.pep)
         for i in pep:
-            data = re.search('(\w+):(\d+-\d+)\((\+|-)\)', i)
-            params[data.group(1)] = [data.group(2).replace('-', ':'),
-                                     data.group(3)]
-        return params
+            data = re.search('(\w+):(\d+)-(\d+)\((\+|-)\)', i)
+            diff = data.group(2) - data.group(3)
+            if diff < 0:
+                position = data.group(2) + ':' + str(int(data.group(2)) + diff)
+            if diff > 0:
+                position = data.group(3) + ':' + str(int(data.group(3)) + diff)
+            seq_of_int[data.group(1)] = [position, data.group(3)]
+        return seq_of_int
 
     def split_and_build_dict(self):
         fasta_dict = {}
@@ -132,7 +136,10 @@ else:
     PepFastaFile(args.pep_file, args.fasta_file)
 
 for f in PepFastaFile:
-    parameters = f.extract_params_from_pep()
+    seqs_of_int = f.extract_params_from_pep()
     fasta_dict = f.split_and_build_dict()
-    seq_id_match_pattern = f.compile_pattern(parameters)
-    print(seq_id_match_pattern)
+    print(seqs_of_int)
+    #seq_id_match_pattern = f.compile_pattern(seqs_of_int)
+    #filt_fasta_dict = f.extract_pertinent_seq(fasta_dict, seqs_of_int,
+                                              #seq_id_match_pattern)
+    #print(filt_fasta_dict)
