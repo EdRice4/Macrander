@@ -1,5 +1,73 @@
 from os import getcwd, listdir
+from string import maketrans
+import re
 import argparse
+
+
+class DataParse(object):
+
+    """A class in which all data parsing functionality is stored."""
+
+    def extract_params_from_pep(self):
+        params = {}
+        pep = filter(lambda x: x[0] == '>', self.pep)
+        for i in pep:
+            data = re.search('(\w+):(\d+-\d+)\((\+|-)\)', i)
+            params[data.group(1)] = [data.group(2).replace('-', ':'),
+                                     data.group(3)]
+        return params
+
+    def split_and_build_dict(self):
+        fasta_dict = {}
+        fasta = self.fas[1:].split('>')
+        for i in fasta:
+            seq_id = i.split(' ', 1)[0]
+            seq = i.split('\n', 1)[-1]
+            fasta_dict[seq_id] = seq.strip()
+        return fasta_dict
+
+
+class RegEx(DataParse):
+
+    """A class in which all regular expression functionality is stored."""
+
+    def compile_pattern(self, parameters):
+        seq_ids = zip(*parameters)[0]
+        pattern = map(lambda x: re.escape(x), seq_ids)
+        pattern = re.comple('|'.join(pattern))
+        return pattern
+
+
+class ExtractData(DataParse):
+
+    """A class in which all data extraction, i.e. the boundary between
+       disparate file types, functionality is stored."""
+
+    def extract_pertinent_seq(self, fasta_dict, seq_of_int, match_object):
+        filt_fasta_dict = {}
+        for i, j in zip(fasta_dict.iteritems(), seq_of_int.iteritems()):
+            if bool(match_object.match(i[0])):
+                filt_fasta_dict[i[0]] = i[1][j[i[0]][0]]
+        return filt_fasta_dict
+
+    def rev_compl(self, filt_fasta_dict, seq_of_int):
+        tbl = maketrans('ATCG', 'TAGC')
+        rev_compl_fasta_dict = {}
+        for i, j in zip(filt_fasta_dict.iteritems(), seq_of_int.iteritems()):
+            if j[i[0]][1] == '-':
+                rev_compl_fasta_dict[i[0]] = (i[1][::-1]).translate(tbl)
+        return rev_compl_fasta_dict
+
+
+class FileIO(ExtractData):
+
+    """A class in which all file input/output functionality is stored."""
+
+    def write_dict(self, rev_compl_fasta_dict):
+        with open(self.fas_new, 'w') as fas:
+            for i, j in zip(rev_compl_fasta_dict.iterkeys(),
+                            rev_compl_fasta_dict.itervalues()):
+                fas.write(i + '\t' + j + '\n')
 
 
 class IterRegistry(type):
@@ -11,7 +79,7 @@ class IterRegistry(type):
         return iter(cls.registry)
 
 
-class PepFile(object):
+class PepFastaFile(object):
 
     """A class in which all the necessary parameters corresponding to each
        respective peptide file are stored."""
@@ -19,22 +87,14 @@ class PepFile(object):
     __metaclass__ = IterRegistry
     registry = []
 
-    def __init__(self, pep_file):
-        self.title = pep_file
+    def __init__(self, pep_file, fasta_file):
+        with open(pep_file, 'r') as pep:
+            self.pep = pep.readlines()
+        with open(fasta_file, 'r') as fas:
+            self.fas = fas.read()
+        self.fas_new = fasta_file.replace('.fasta', '_new.fasta')
         self.registry.append(self)
 
-
-class FastaFile(object):
-
-    """A class in which all the necessary parameters corresponding to each
-       respective fasta file are stored."""
-
-    __metaclass__ = IterRegistry
-    registry = []
-
-    def __init__(self, fasta_file):
-        self.title = fasta_file
-        self.registry.append(self)
 
 arg_parser = argparse.ArgumentParser()
 arg_parser.add_argument('pep_file', type=str, help=('Name of TransDecoder '
@@ -67,13 +127,12 @@ if args.batch:
     pep_files = sorted(map(lambda x: '.pep.' in x, fid))
     fasta_files = sorted(map(lambda x: '.fasta' in x, fid))
     for i, j in zip(pep_files, fasta_files):
-        PepFile(i)
-        FastaFile(j)
+        PepFastaFile(i, j)
 else:
-    PepFile(args.pep_file)
-    FastaFile(args.fasta_file)
+    PepFastaFile(args.pep_file, args.fasta_file)
 
-for pep in PepFile:
-    print(pep.title)
-for fas in FastaFile:
-    print(fas.title)
+for f in PepFastaFile:
+    params = f.extract_params_from_pep()
+    fasta_dict = f.split_and_build_dict()
+    print(params)
+    print(fasta_dict)
