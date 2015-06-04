@@ -128,8 +128,7 @@ else:
 
 for f in PepFastaFile:
     seqs_of_int = f.extract_params_from_pep()
-    print(seqs_of_int)
-    #fasta_dict = f.split_and_build_dict()
-    #filt_fasta_dict = f.extract_pertinent_seq(fasta_dict, seqs_of_int)
-    #rev_compl_fasta_dict = f.rev_compl(filt_fasta_dict, seqs_of_int)
-    #f.write_dict(rev_compl_fasta_dict)
+    fasta_dict = f.split_and_build_dict()
+    filt_fasta_dict = f.extract_pertinent_seq(fasta_dict, seqs_of_int)
+    rev_compl_fasta_dict = f.rev_compl(filt_fasta_dict, seqs_of_int)
+    f.write_dict(rev_compl_fasta_dict)
