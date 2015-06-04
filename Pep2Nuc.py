@@ -1,6 +1,6 @@
 from os import getcwd, listdir
 from string import maketrans
-from re import search
+from re import search, sub
 import argparse
 
 
@@ -17,10 +17,13 @@ class DataParse(object):
             if diff < 0:
                 start = int(data.group(2)) - 1
                 end = start - diff
-            if diff > 0:
+            else:
                 start = int(data.group(3)) - 1
                 end = start + diff
-            seq_of_int[data.group(1)] = [start, end, data.group(4)]
+            if seq_of_int.get(data.group(1), False):
+                seq_of_int[data.group(1)].extend([start, end, data.group(4)])
+            else:
+                seq_of_int[data.group(1)] = [start, end, data.group(4)]
         return seq_of_int
 
     def split_and_build_dict(self):
@@ -29,7 +32,7 @@ class DataParse(object):
         for i in fasta:
             seq_id = i.split(' ', 1)[0]
             seq = i.split('\n', 1)[-1]
-            fasta_dict[seq_id] = seq.strip()
+            fasta_dict[seq_id.replace('\n', '')] = seq.replace('\n', '')
         return fasta_dict
 
 
@@ -38,19 +41,24 @@ class ExtractData(DataParse):
     """A class in which all data extraction, i.e. the boundary between
        disparate file types, functionality is stored."""
 
-    def extract_pertinent_seq(self, fasta_dict, seq_of_int):
-        filt_fasta_dict = {}
-        for i in fasta_dict.iteritems():
-            if i[0] in seq_of_int.iterkeys():
-                filt_fasta_dict[i[0]] = i[1][seq_of_int[i[0]][0]:seq_of_int[i[0]][1]]
-        return filt_fasta_dict
+    def extract_pertinent_seq(self, fd, soi):
+        ffd = {}
+        for i in fd.iteritems():
+            if soi.get(i[0], False):
+                ffd[i[0]] = [i[1][soi[i[0]][j]:soi[i[0]][j + 1]]
+                             for j in range(0, len(soi[i[0]]), 3)]
+        return ffd
 
-    def rev_compl(self, filt_fasta_dict, seq_of_int):
+    def rev_compl(self, ffd, soi):
         tbl = maketrans('ATCG', 'TAGC')
         rev_compl_fasta_dict = {}
-        for i in filt_fasta_dict.iteritems():
-            if seq_of_int[i[0]][2] == '-':
-                rev_compl_fasta_dict[i[0]] = (i[1][::-1]).translate(tbl)
+        for i in ffd.iteritems():
+            if soi[i[0]][2] == '-':
+                rev_compl_fasta_dict[i[0]] = map(lambda x: x[::-1], ffd[i[0]])
+                rev_compl_fasta_dict[i[0]] = map(lambda x: x.translate(tbl),
+                                                 ffd[i[0]])
+            else:
+                rev_compl_fasta_dict[i[0]] = ffd[i[0]]
         return rev_compl_fasta_dict
 
 
@@ -58,11 +66,20 @@ class FileIO(ExtractData):
 
     """A class in which all file input/output functionality is stored."""
 
-    def write_dict(self, rev_compl_fasta_dict):
+    def make_pretty(self, rcfd):
+        pretty_dict = {}
+        repl_funct = lambda m: m.group(0) + '\n'
+        for i in rcfd.iteritems():
+            pretty_dict[i[0]] = map(lambda x: sub('[A-Z]{50}', repl_funct,
+                                    x), i[1])
+        return pretty_dict
+
+    def write_dict(self, pd):
         with open(self.fas_new, 'w') as fas:
-            for i, j in zip(rev_compl_fasta_dict.iterkeys(),
-                            rev_compl_fasta_dict.itervalues()):
-                fas.write('>' + i + '\n' + j + '\n')
+            for i in pd.iteritems():
+                fas.write('>%s\n' % i[0])
+                fas.write(('\n>%s\n' % i[0]).join(i[1]))
+                fas.write('\n')
 
 
 class IterRegistry(type):
@@ -131,4 +148,5 @@ for f in PepFastaFile:
     fasta_dict = f.split_and_build_dict()
     filt_fasta_dict = f.extract_pertinent_seq(fasta_dict, seqs_of_int)
     rev_compl_fasta_dict = f.rev_compl(filt_fasta_dict, seqs_of_int)
-    f.write_dict(rev_compl_fasta_dict)
+    pretty_dict = f.make_pretty(rev_compl_fasta_dict)
+    f.write_dict(pretty_dict)
