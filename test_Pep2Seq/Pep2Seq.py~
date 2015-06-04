@@ -1,6 +1,6 @@
 from os import getcwd, listdir
 from string import maketrans
-import re
+from re import search
 import argparse
 
 
@@ -12,13 +12,13 @@ class DataParse(object):
         seq_of_int = {}
         pep = filter(lambda x: x[0] == '>', self.pep)
         for i in pep:
-            data = re.search('(\w+):(\d+)-(\d+)\((\+|-)\)', i)
+            data = search('(\w+):(\d+)-(\d+)\((\+|-)\)', i)
             diff = int(data.group(2)) - int(data.group(3))
             if diff < 0:
                 start = int(data.group(2))
                 end = int(data.group(2)) - diff
             if diff > 0:
-                start = data.group(3)
+                start = int(data.group(3))
                 end = int(data.group(3)) + diff
             seq_of_int[data.group(1)] = [start, end, data.group(4)]
         return seq_of_int
@@ -33,34 +33,23 @@ class DataParse(object):
         return fasta_dict
 
 
-class RegEx(DataParse):
-
-    """A class in which all regular expression functionality is stored."""
-
-    def compile_pattern(self, parameters):
-        seq_ids = zip(*parameters)[0]
-        pattern = map(lambda x: re.escape(x), seq_ids)
-        pattern = re.compile('|'.join(pattern))
-        return pattern
-
-
-class ExtractData(RegEx):
+class ExtractData(DataParse):
 
     """A class in which all data extraction, i.e. the boundary between
        disparate file types, functionality is stored."""
 
-    def extract_pertinent_seq(self, fasta_dict, seq_of_int, match_object):
+    def extract_pertinent_seq(self, fasta_dict, seq_of_int):
         filt_fasta_dict = {}
-        for i, j in zip(fasta_dict.iteritems(), seq_of_int.iteritems()):
-            if bool(match_object.match(i[0])):
-                filt_fasta_dict[i[0]] = i[1][j[i[0]][0]:j[i[0]][1]]
+        for i in fasta_dict.iteritems():
+            if i[0] in seq_of_int.iterkeys():
+                filt_fasta_dict[i[0]] = i[1][seq_of_int[i[0]][0]:seq_of_int[i[0]][1]]
         return filt_fasta_dict
 
     def rev_compl(self, filt_fasta_dict, seq_of_int):
         tbl = maketrans('ATCG', 'TAGC')
         rev_compl_fasta_dict = {}
-        for i, j in zip(filt_fasta_dict.iteritems(), seq_of_int.iteritems()):
-            if j[i[0]][2] == '-':
+        for i in filt_fasta_dict.iteritems():
+            if seq_of_int[i[0]][2] == '-':
                 rev_compl_fasta_dict[i[0]] = (i[1][::-1]).translate(tbl)
         return rev_compl_fasta_dict
 
@@ -140,8 +129,6 @@ else:
 for f in PepFastaFile:
     seqs_of_int = f.extract_params_from_pep()
     fasta_dict = f.split_and_build_dict()
-    print(seqs_of_int)
-    #seq_id_match_pattern = f.compile_pattern(seqs_of_int)
-    #filt_fasta_dict = f.extract_pertinent_seq(fasta_dict, seqs_of_int,
-                                              #seq_id_match_pattern)
-    #print(filt_fasta_dict)
+    filt_fasta_dict = f.extract_pertinent_seq(fasta_dict, seqs_of_int)
+    rev_compl_fasta_dict = f.rev_compl(filt_fasta_dict, seqs_of_int)
+    print(filt_fasta_dict)
