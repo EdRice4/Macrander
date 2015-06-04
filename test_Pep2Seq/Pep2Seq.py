@@ -13,7 +13,7 @@ class DataParse(object):
         pep = filter(lambda x: x[0] == '>', self.pep)
         for i in pep:
             data = re.search('(\w+):(\d+)-(\d+)\((\+|-)\)', i)
-            diff = data.group(2) - data.group(3)
+            diff = int(data.group(2)) - int(data.group(3))
             if diff < 0:
                 position = data.group(2) + ':' + str(int(data.group(2)) + diff)
             if diff > 0:
