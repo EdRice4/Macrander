@@ -51,7 +51,7 @@ class ExtractData(RegEx):
         filt_fasta_dict = {}
         for i, j in zip(fasta_dict.iteritems(), seq_of_int.iteritems()):
             if bool(match_object.match(i[0])):
-                filt_fasta_dict[i[0]] = i[1][j[i[0]][0]]
+                filt_fasta_dict[i[0]] = i[1][int(j[i[0]][0])]
         return filt_fasta_dict
 
     def rev_compl(self, filt_fasta_dict, seq_of_int):
@@ -138,8 +138,7 @@ else:
 for f in PepFastaFile:
     seqs_of_int = f.extract_params_from_pep()
     fasta_dict = f.split_and_build_dict()
-    print(seqs_of_int)
-    #seq_id_match_pattern = f.compile_pattern(seqs_of_int)
-    #filt_fasta_dict = f.extract_pertinent_seq(fasta_dict, seqs_of_int,
-                                              #seq_id_match_pattern)
-    #print(filt_fasta_dict)
+    seq_id_match_pattern = f.compile_pattern(seqs_of_int)
+    filt_fasta_dict = f.extract_pertinent_seq(fasta_dict, seqs_of_int,
+                                              seq_id_match_pattern)
+    print(filt_fasta_dict)
