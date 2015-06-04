@@ -15,10 +15,12 @@ class DataParse(object):
             data = re.search('(\w+):(\d+)-(\d+)\((\+|-)\)', i)
             diff = int(data.group(2)) - int(data.group(3))
             if diff < 0:
-                position = data.group(2) + ':' + str(int(data.group(2)) - diff)
+                start = int(data.group(2))
+                end = int(data.group(2)) - diff
             if diff > 0:
-                position = data.group(3) + ':' + str(int(data.group(3)) + diff)
-            seq_of_int[data.group(1)] = [position, data.group(4)]
+                start = data.group(3)
+                end = int(data.group(3)) + diff
+            seq_of_int[data.group(1)] = [start, end, data.group(4)]
         return seq_of_int
 
     def split_and_build_dict(self):
@@ -51,14 +53,14 @@ class ExtractData(RegEx):
         filt_fasta_dict = {}
         for i, j in zip(fasta_dict.iteritems(), seq_of_int.iteritems()):
             if bool(match_object.match(i[0])):
-                filt_fasta_dict[i[0]] = i[1][int(j[i[0]][0])]
+                filt_fasta_dict[i[0]] = i[1][j[i[0]][0]:j[i[0]][1]]
         return filt_fasta_dict
 
     def rev_compl(self, filt_fasta_dict, seq_of_int):
         tbl = maketrans('ATCG', 'TAGC')
         rev_compl_fasta_dict = {}
         for i, j in zip(filt_fasta_dict.iteritems(), seq_of_int.iteritems()):
-            if j[i[0]][1] == '-':
+            if j[i[0]][2] == '-':
                 rev_compl_fasta_dict[i[0]] = (i[1][::-1]).translate(tbl)
         return rev_compl_fasta_dict
 
@@ -138,7 +140,8 @@ else:
 for f in PepFastaFile:
     seqs_of_int = f.extract_params_from_pep()
     fasta_dict = f.split_and_build_dict()
-    seq_id_match_pattern = f.compile_pattern(seqs_of_int)
-    filt_fasta_dict = f.extract_pertinent_seq(fasta_dict, seqs_of_int,
-                                              seq_id_match_pattern)
-    print(filt_fasta_dict)
+    print(seqs_of_int)
+    #seq_id_match_pattern = f.compile_pattern(seqs_of_int)
+    #filt_fasta_dict = f.extract_pertinent_seq(fasta_dict, seqs_of_int,
+                                              #seq_id_match_pattern)
+    #print(filt_fasta_dict)
