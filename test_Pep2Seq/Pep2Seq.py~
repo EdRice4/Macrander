@@ -140,7 +140,8 @@ else:
 for f in PepFastaFile:
     seqs_of_int = f.extract_params_from_pep()
     fasta_dict = f.split_and_build_dict()
-    seq_id_match_pattern = f.compile_pattern(seqs_of_int)
-    filt_fasta_dict = f.extract_pertinent_seq(fasta_dict, seqs_of_int,
-                                              seq_id_match_pattern)
-    print(filt_fasta_dict)
+    print(seqs_of_int)
+    #seq_id_match_pattern = f.compile_pattern(seqs_of_int)
+    #filt_fasta_dict = f.extract_pertinent_seq(fasta_dict, seqs_of_int,
+                                              #seq_id_match_pattern)
+    #print(filt_fasta_dict)

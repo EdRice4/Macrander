@@ -18,7 +18,7 @@ class DataParse(object):
                 start = int(data.group(2))
                 end = int(data.group(2)) - diff
             if diff > 0:
-                start = data.group(3)
+                start = int(data.group(3))
                 end = int(data.group(3)) + diff
             seq_of_int[data.group(1)] = [start, end, data.group(4)]
         return seq_of_int
