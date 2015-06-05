@@ -16,10 +16,10 @@ class DataParse(object):
             diff = int(data.group(2)) - int(data.group(3))
             if diff < 0:
                 start = int(data.group(2)) - 1
-                end = start - diff
+                end = start - (diff + 2)
             else:
                 start = int(data.group(3)) - 1
-                end = start + diff
+                end = start + (diff - 2)
             if seq_of_int.get(data.group(1), False):
                 seq_of_int[data.group(1)].extend([start, end, data.group(4)])
             else:
