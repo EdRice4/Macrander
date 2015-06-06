@@ -16,10 +16,10 @@ class DataParse(object):
             diff = int(data.group(2)) - int(data.group(3))
             if diff < 0:
                 start = int(data.group(2)) - 1
-                end = start - (diff + 2)
+                end = start - (diff - 1)
             else:
                 start = int(data.group(3)) - 1
-                end = start + (diff - 2)
+                end = start + (diff + 1)
             if seq_of_int.get(data.group(1), False):
                 seq_of_int[data.group(1)].extend([start, end, data.group(4)])
             else:
@@ -54,9 +54,10 @@ class ExtractData(DataParse):
         rev_compl_fasta_dict = {}
         for i in ffd.iteritems():
             if soi[i[0]][2] == '-':
-                rev_compl_fasta_dict[i[0]] = map(lambda x: x[::-1], ffd[i[0]])
-                rev_compl_fasta_dict[i[0]] = map(lambda x: x.translate(tbl),
-                                                 ffd[i[0]])
+                rev_compl_fasta_dict[i[0]] = map(lambda x:
+                                                 x[::-1].translate(tbl), i[1])
+                #rev_compl_fasta_dict[i[0]] = map(lambda x: x.translate(tbl),
+                #                                 i[1])
             else:
                 rev_compl_fasta_dict[i[0]] = ffd[i[0]]
         return rev_compl_fasta_dict
