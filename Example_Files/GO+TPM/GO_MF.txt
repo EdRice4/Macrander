@@ -1,0 +1,15 @@
+transcript_id	MF
+comp0_c0_seq1	.
+comp2_c0_seq1	.
+comp3_c0_seq2	GO:0008188^molecular_function^neuropeptide receptor activity	GO:0016499^molecular_function^orexin receptor activity	GO:0017046^molecular_function^peptide hormone binding
+comp6_c0_seq1	.
+comp7_c0_seq1	GO:0005524^molecular_function^ATP binding	GO:0016887^molecular_function^AT
+comp12_c1_seq1	GO:0051378^molecular_function^serotonin binding	GO:0004993^molecular_function^serotonin receptor activity
+comp13_c0_seq1	GO:0005524^molecular_function^ATP binding	GO:0008026^molecular_function^ATP-dependent helicase activity	GO:0003677^molecular_function^DNA binding
+comp14_c1_seq1	.
+comp17_c0_seq1	.
+comp22_c0_seq1	.
+comp22_c1_seq1	.
+comp28_c0_seq1	.
+comp31_c0_seq1	GO:0016853^molecular_function^isomerase activity	GO:0004043^molecular_function^L-aminoadipate-semialdehyde dehydrogenase activity	GO:0016874^molecular_function^ligase activity	GO:0000166^molecular_function^nucleotide binding	GO:0031177^molecular_function^
+comp31_c1_seq1	GO:0016853^molecular_function^isomerase activity	GO:0016874^molecular_function^ligase activity	GO:0031177^molecular_function^phosphopantetheine binding

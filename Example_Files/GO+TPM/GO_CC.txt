@@ -1,0 +1,15 @@
+transcript_id	CC	
+comp0_c0_seq1	.	
+comp2_c0_seq1	GO:0009507^cellular_component^chloroplast	GO:0009508^cellular_component^plastid chromosome	
+comp3_c0_seq2	GO:0005887^cellular_component^integral to plasma membrane	
+comp6_c0_seq1	GO:0016323^cellular_component^basolateral plasma membrane	GO:0045169^cellular_component^fusome	GO:0005794^cellular_component^Golgi apparatus	GO:0005811^cellular_component^lipid particle	GO:0031594^cellular_component^neuromuscular junction	
+comp7_c0_seq1	GO:0005858^cellular_component^axonemal dynein complex	GO:0035085^cellular_component^cilium axoneme	GO:0005737^cellular_component^cytoplasm	GO:0005874^cellular_component^microtubule	
+comp12_c1_seq1	GO:0016021^cellular_component^integral to membrane	GO:0005886^cellular_component^plasma membrane	
+comp13_c0_seq1	GO:0005815^cellular_component^microtubule organizing center	GO:0005634^cellular_component^nucleus	
+comp14_c1_seq1	GO:0016021^cellular_component^integral to membrane	
+comp17_c0_seq1	GO:0005739^cellular_component^mitochondrion	
+comp22_c0_seq1	GO:0009507^cellular_component^chloroplast	
+comp22_c1_seq1	GO:0009507^cellular_component^chloroplast	
+comp28_c0_seq1	GO:0005694^cellular_component^chromosome	GO:0005634^cellular_component^nucleus	
+comp31_c0_seq1	.	
+comp31_c1_seq1	.	

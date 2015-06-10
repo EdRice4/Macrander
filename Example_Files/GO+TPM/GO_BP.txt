@@ -1,0 +1,16 @@
+transcript_id	BP
+comp0_c0_seq1	.
+comp2_c0_seq1	GO:0045893^biological_process^positive regulation of transcription, DNA-dependent	GO:0042793^biological_process^transcription from plastid promoter
+comp3_c0_seq2	.
+comp6_c0_seq1	.
+comp7_c0_seq1	.
+comp12_c1_seq1	.
+comp13_c0_seq1	GO:0014827^biological_process^intestine smooth muscl
+comp14_c1_seq1	.
+comp17_c0_seq1	.
+comp22_c0_seq1	GO:0048255^biological_process^mRNA stabilization
+comp22_c1_seq1	.
+comp28_c0_seq1	GO:0001824^biological_process^blastocyst development	GO:0030154^biological_process^cell differentiation	GO:0042138^biological_process^meiotic DNA double-strand break formation
+comp31_c0_seq1	.
+comp31_c1_seq1	GO:0017000^biological_process^antibiotic biosynthetic process
+ 
