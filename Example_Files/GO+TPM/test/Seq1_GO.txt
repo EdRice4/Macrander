@@ -1,0 +1,15 @@
+transcript_id	gene_ontology
+comp0_c0_seq1	.
+comp2_c0_seq1	GO:0009507^cellular_component^chloroplast`GO:0009508^cellular_component^plastid chromosome`GO:0045893^biological_process^positive regulation of transcription, DNA-dependent`GO:0042793^biological_process^transcription from plastid promoter
+comp3_c0_seq2	GO:0005887^cellular_component^integral to plasma membrane`GO:0008188^molecular_function^neuropeptide receptor activity`GO:0016499^molecular_function^orexin receptor activity`GO:0017046^molecular_function^peptide hormone binding`GO:0007631^biological_proce
+comp6_c0_seq1	GO:0016323^cellular_component^basolateral plasma membrane`GO:0045169^cellular_component^fusome`GO:0005794^cellular_component^Golgi apparatus`GO:0005811^cellular_component^lipid particle`GO:0031594^cellular_component^neuromuscular junction`GO:0008091^cellu
+comp7_c0_seq1	GO:0005858^cellular_component^axonemal dynein complex`GO:0035085^cellular_component^cilium axoneme`GO:0005737^cellular_component^cytoplasm`GO:0005874^cellular_component^microtubule`GO:0005524^molecular_function^ATP binding`GO:0016887^molecular_function^AT
+comp12_c1_seq1	GO:0016021^cellular_component^integral to membrane`GO:0005886^cellular_component^plasma membrane`GO:0051378^molecular_function^serotonin binding`GO:0004993^molecular_function^serotonin receptor activity`GO:0014827^biological_process^intestine smooth muscl
+comp13_c0_seq1	GO:0005815^cellular_component^microtubule organizing center`GO:0005634^cellular_component^nucleus`GO:0005524^molecular_function^ATP binding`GO:0008026^molecular_function^ATP-dependent helicase activity`GO:0003677^molecular_function^DNA binding`GO:0006281^
+comp14_c1_seq1	GO:0016021^cellular_component^integral to membrane
+comp17_c0_seq1	GO:0005739^cellular_component^mitochondrion
+comp22_c0_seq1	GO:0009507^cellular_component^chloroplast`GO:0048255^biological_process^mRNA stabilization
+comp22_c1_seq1	GO:0009507^cellular_component^chloroplast
+comp28_c0_seq1	GO:0005694^cellular_component^chromosome`GO:0005634^cellular_component^nucleus`GO:0001824^biological_process^blastocyst development`GO:0030154^biological_process^cell differentiation`GO:0042138^biological_process^meiotic DNA double-strand break formation`
+comp31_c0_seq1	GO:0016853^molecular_function^isomerase activity`GO:0004043^molecular_function^L-aminoadipate-semialdehyde dehydrogenase activity`GO:0016874^molecular_function^ligase activity`GO:0000166^molecular_function^nucleotide binding`GO:0031177^molecular_function^
+comp31_c1_seq1	GO:0016853^molecular_function^isomerase activity`GO:0016874^molecular_function^ligase activity`GO:0031177^molecular_function^phosphopantetheine binding`GO:0017000^biological_process^antibiotic biosynthetic process

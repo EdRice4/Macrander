@@ -1,0 +1,15 @@
+transcript_id	TPM
+comp0_c0_seq1	200
+comp2_c0_seq1	600
+comp3_c0_seq2	20
+comp6_c0_seq1	10
+comp7_c0_seq1	15
+comp12_c1_seq1	13
+comp13_c0_seq1	280
+comp14_c1_seq1	980
+comp17_c0_seq1	1200
+comp22_c0_seq1	2220
+comp22_c1_seq1	130
+comp28_c0_seq1	12
+comp31_c0_seq1	124
+comp31_c1_seq1	18

@@ -1,0 +1,12 @@
+transcript_id	gene_ontology
+comp13_c0_seq1	GO:0005815^cellular_component^microtubule organizing center:140	GO:0005634^cellular_component^nucleus:140
+comp6_c0_seq1	GO:0016323^cellular_component^basolateral plasma membrane:2	GO:0045169^cellular_component^fusome:2	GO:0005794^cellular_component^Golgi apparatus:2	GO:0005811^cellular_component^lipid particle:2	GO:0031594^cellular_component^neuromuscular junction:2
+comp17_c0_seq1	GO:0005739^cellular_component^mitochondrion:1200
+comp7_c0_seq1	GO:0005858^cellular_component^axonemal dynein complex:3	GO:0035085^cellular_component^cilium axoneme:3	GO:0005737^cellular_component^cytoplasm:3	GO:0005874^cellular_component^microtubule:3
+comp2_c0_seq1	GO:0009507^cellular_component^chloroplast:300	GO:0009508^cellular_component^plastid chromosome:300
+comp3_c0_seq2	GO:0005887^cellular_component^integral to plasma membrane:20
+comp22_c0_seq1	GO:0009507^cellular_component^chloroplast:2220
+comp12_c1_seq1	GO:0016021^cellular_component^integral to membrane:6	GO:0005886^cellular_component^plasma membrane:6
+comp14_c1_seq1	GO:0016021^cellular_component^integral to membrane:980
+comp28_c0_seq1	GO:0005694^cellular_component^chromosome:6	GO:0005634^cellular_component^nucleus:6
+comp22_c1_seq1	GO:0009507^cellular_component^chloroplast:130
