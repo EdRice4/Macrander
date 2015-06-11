@@ -106,7 +106,7 @@ class DataParse(FileIO):
         filtered_GO_dict = {}
         for i in GO_category:
             for k, v in GO_dict.iteritems():
-                tmp_value = filter(lambda x: GO_category in x, v)
+                tmp_value = filter(lambda x: i in x, v)
                 if tmp_value:
                     filtered_GO_dict[GO_category] = dict(k=tmp_value)
                 # {{{ return empty
