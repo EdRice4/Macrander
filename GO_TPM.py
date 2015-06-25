@@ -90,6 +90,7 @@ class FileIO(object):
             cum.write('GO_id\tCumulative_TPM\n')
             for k, v in cum_data.iteritems():
                 cum.write(k + '\t' + str(v) + '\n')
+    # }}}
 # }}}
 
 
