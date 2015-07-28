@@ -5,11 +5,12 @@ from re import search, sub
 import argparse
 # }}}
 
-# {{{ DataParse
-class DataParse(object):
+# {{{ ExtractData
+class ExtractData(object):
 
     """ {{{ Docstrings
-    A class in which all data parsing functionality is stored.
+    A class in which all data extraction functionality, i.e. data is simply
+    read, functionality is stored.
 
     Namely:
 
@@ -38,6 +39,7 @@ class DataParse(object):
 
             Also of note, all new line characters (\n) are removed to prevent
             them from interfering with counting the nucleotides.
+
     }}} """
 
     # {{{ extract_params_from_pep
@@ -110,20 +112,48 @@ class DataParse(object):
             fasta_dict[seq_id] = seq
         return fasta_dict
     # }}}
+# }}}
 
 
-class ExtractData(DataParse):
+# {{{ DataParse
+class DataParse(ExtractData):
 
-    """A class in which all data extraction, i.e. the boundary between
-       disparate file types, functionality is stored."""
+    """ {{{ Docstrings
+    A class in which all data parsing, i.e. the boundary between disparate file
+    types, functionality is stored.
 
+    Namely:
+
+        1.) Data from TransDecoder is used to extract the pertinent nucleotides
+            from the fasta file, if applicable, and is stored in a filtered
+            fasta dictionary in the form of:
+
+            dictionary = {
+                    'Seq_ID' : [
+                            'sequence',
+                            'sequence'
+                            ]
+                    }
+
+        2.) If applicable (if reverse), the reverse complement of the strand
+            is generated and stored in a dictionary in the same form as above.
+
+    }}} """
+
+    # {{{ extract_pertinent_seq
     def extract_pertinent_seq(self, fd, soi):
         ffd = {}
-        for i in fd.iteritems():
-            if soi.get(i[0], False):
-                ffd[i[0]] = [i[1][soi[i[0]][j]:soi[i[0]][j + 1]]
-                             for j in range(0, len(soi[i[0]]), 3)]
+        for i in soi.iteritems():
+            # Get sequence ID
+            seq_id = i[0]
+            # Get sequence from fasta dictionary
+            seq = fd[i[0]]
+            # Build filtered fasta dictionary
+            ffd[seq_id] = map(
+                    lambda x: seq[x[1]:x[2]], i[1]
+                    )
         return ffd
+    # }}}
 
     def rev_compl(self, ffd, soi):
         tbl = maketrans('ATCG', 'TAGC')
