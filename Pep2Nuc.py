@@ -1,39 +1,115 @@
+# {{{ Imports
 from os import getcwd, listdir
 from string import maketrans
 from re import search, sub
 import argparse
+# }}}
 
-
+# {{{ DataParse
 class DataParse(object):
 
-    """A class in which all data parsing functionality is stored."""
+    """ {{{ Docstrings
+    A class in which all data parsing functionality is stored.
 
+    Namely:
+
+        1.) All pertinent parameters, including the sequence ID, nucleotides,
+            and strand, are extracted from the TransDecoder output and stored
+            in a dictionary with the form of:
+
+                dictionary = {
+                        'Seq_ID' : [
+                                (start, end, 'strand'),
+                                (start, end, 'strand')
+                                ]
+                        }
+
+            Note that the dictionary supports multiple hits for the same
+            sequence ID and that the parameters are stored as a list of
+            tuples.
+
+        2.) All pertinent parameters, including sequence ID and sequence, are
+            extracted from the fasta file and stored in a dictionary with the
+            form of:
+
+                dictionary = {
+                        'Seq_ID' : 'sequence'
+                        }
+
+            Also of note, all new line characters (\n) are removed to prevent
+            them from interfering with counting the nucleotides.
+    }}} """
+
+    # {{{ extract_params_from_pep
     def extract_params_from_pep(self):
+
+        """ {{{ Docstrings
+        Reads TransDecoder output into dictionary.
+        }}} """
+
         seq_of_int = {}
+        # Peptide sequence information not pertinent
         pep = filter(lambda x: x[0] == '>', self.pep)
         for i in pep:
+            # Sequence ID, nucleotides, and strand, respectively
             data = search('(\w+):(\d+)-(\d+)\((\+|-)\)', i)
             diff = int(data.group(2)) - int(data.group(3))
+            # If forward strand (+)
             if diff < 0:
+                # Python begins indexing at 0 while TD begins at 1
                 start = int(data.group(2)) - 1
+                # TODO: WHY AM I DOING THIS?
                 end = start - (diff - 1)
+            # If reverse strand (-)
             else:
                 start = int(data.group(3)) - 1
+                # TODO: WHY AM I DOING THIS?
                 end = start + (diff + 1)
-            if seq_of_int.get(data.group(1), False):
-                seq_of_int[data.group(1)].extend([start, end, data.group(4)])
+            # If already present in dictionary
+            if seq_of_int.get(data.group(1)):
+                seq_of_int[data.group(1)].append((start, end, data.group(4)))
+            # If not already present in dictionary
             else:
-                seq_of_int[data.group(1)] = [start, end, data.group(4)]
+                seq_of_int[data.group(1)] = [(start, end, data.group(4))]
         return seq_of_int
+    # }}}
 
-    def split_and_build_dict(self):
+    # {{{ extract_params_from_fas
+    def extract_params_from_fas(self):
+
+        """ {{{ Docstrings
+        Reads fasta file into dictionary. Note: Please ensure fasta file
+        contains no empty lines. Use the command:
+
+            sed '/^$/d/ [file] > [output]
+
+        }}} """
+
         fasta_dict = {}
+        # Python runs the split function first which generates an empty line
+        # at the beginning
         fasta = self.fas[1:].split('>')
+        # Use for loop as multiple manipulations of 'i'
         for i in fasta:
-            seq_id = i.split(' ', 1)[0]
-            seq = i.split('\n', 1)[-1]
-            fasta_dict[seq_id.replace('\n', '')] = seq.replace('\n', '')
+            # {{{ Modifiable
+            # ::Modifiable::
+            # The first argument in the split function is the character that
+            # separates each sequence ID with its respective sequence. This
+            # character should not be present in the sequence ID itself.
+            # The script assumes that each ID is on a separate line so that
+            # the fasta file looks like:
+            #
+            #       >Seq_ID\n
+            #       sequence\n
+            #       sequence\n ...
+            #
+            # }}}
+            i = i.split('\n', 1)
+            seq_id = i[0].strip()
+            seq = i[1].replace('\n', '')
+            fasta_dict[seq_id] = seq
         return fasta_dict
+    # }}}
 
 
 class ExtractData(DataParse):
@@ -146,7 +222,7 @@ else:
 
 for f in PepFastaFile:
     seqs_of_int = f.extract_params_from_pep()
-    fasta_dict = f.split_and_build_dict()
+    fasta_dict = f.extract_params_from_fas()
     filt_fasta_dict = f.extract_pertinent_seq(fasta_dict, seqs_of_int)
     rev_compl_fasta_dict = f.rev_compl(filt_fasta_dict, seqs_of_int)
     pretty_dict = f.make_pretty(rev_compl_fasta_dict)
