@@ -124,9 +124,13 @@ class DataParse(ExtractData):
 
     Namely:
 
-        1.) Data from TransDecoder is used to extract the pertinent nucleotides
-            from the fasta file, if applicable, and is stored in a filtered
-            fasta dictionary in the form of:
+        1.) If applicable (if reverse), the reverse complement of the strand
+            is generated.
+
+        2.) Data from TransDecoder is used to extract the pertinent nucleotides
+            from the fasta file, and if applicable, the reverse complement of
+            the sequence is generated (utilizing the previous function), which
+            is/are stored in a filtered fasta dictionary in the form of:
 
             dictionary = {
                     'Seq_ID' : [
@@ -135,13 +139,39 @@ class DataParse(ExtractData):
                             ]
                     }
 
-        2.) If applicable (if reverse), the reverse complement of the strand
-            is generated and stored in a dictionary in the same form as above.
-
     }}} """
+
+    # {{{ rev_compl
+    def rev_compl(params, seq):
+
+        """ {{{ Docstrings
+        Returns the reverse complement of a given sequence, if applicable.
+        }}} """
+
+        # Define variables
+        start, end, strand = params
+        tbl = maketrans('ATCG', 'TAGC')
+        # If forward strand, do nothing
+        if strand == '+':
+            return seq[start:end]
+        # If reverse, return reverse complement
+        else:
+            seq = seq[start:end]
+            # Reverse
+            rev_seq = seq[::-1]
+            # Reverse complement
+            rev_compl_seq = rev_seq.translate(tbl)
+            return rev_compl_seq
+    # }}}
 
     # {{{ extract_pertinent_seq
     def extract_pertinent_seq(self, fd, soi):
+
+        """ {{{ Docstrings
+        Returns pertinent sequences, and if applicable, reverse complement of
+        such, and stores in dictionary.
+        }}} """
+
         ffd = {}
         for i in soi.iteritems():
             # Get sequence ID
@@ -150,23 +180,10 @@ class DataParse(ExtractData):
             seq = fd[i[0]]
             # Build filtered fasta dictionary
             ffd[seq_id] = map(
-                    lambda x: seq[x[1]:x[2]], i[1]
+                    lambda x: rev_compl(x, seq), i[1]
                     )
         return ffd
     # }}}
-
-    def rev_compl(self, ffd, soi):
-        tbl = maketrans('ATCG', 'TAGC')
-        rev_compl_fasta_dict = {}
-        for i in ffd.iteritems():
-            if soi[i[0]][2] == '-':
-                rev_compl_fasta_dict[i[0]] = map(lambda x:
-                                                 x[::-1].translate(tbl), i[1])
-                #rev_compl_fasta_dict[i[0]] = map(lambda x: x.translate(tbl),
-                #                                 i[1])
-            else:
-                rev_compl_fasta_dict[i[0]] = ffd[i[0]]
-        return rev_compl_fasta_dict
 
 
 class FileIO(ExtractData):
