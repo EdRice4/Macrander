@@ -304,7 +304,8 @@ arg_parser = argparse.ArgumentParser(
                 'Concatencates gene ontology and quantification data from '
                 'RNA-seq (TPM) in a more informative manner.'
                 ),
-        epilog=('Note: All GO and TPM files must contain \'_GO\' and \'_TPM\' '
+        epilog=(
+                'Note: All GO and TPM files must contain \'_GO\' and \'_TPM\' '
                 'in name, respectively, and must be named in analogous '
                 'manner. e.g. Seq_One_GO.txt, Seq_One_TPM.txt'
                 )
