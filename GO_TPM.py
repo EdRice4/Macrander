@@ -13,6 +13,7 @@ class FileIO(object):
 
         1.) A GO.txt/TPM.txt file is read in the form of a list with each
             item (line) stripped of trailing white space.
+
         2.) A concatenated GO/TPM dictionary is written to a file in the form
             of:
 
@@ -20,15 +21,18 @@ class FileIO(object):
                 Seq_ID\tGO:GO_ID^GO^data:TPM\tGO:GO_ID^GO^data:TPM\n
 
             See docstrings in DataParse for explanation of TPM values.
+
         3.) Files output by write_concat_GO_dicts are read into list, later to
             be concatenated into a massive string so that the GO IDs and
             corresponding TPM values can be extracted.
+
         4.) A concatenated GO/TPM dictionary is written to a file in the form
             of:
 
                 GO_id\tCumulative_TPM\n
                 GO_ID\tTPM
             See docstrings in DataParse for explanation of cumulative TPM.
+
     }}} """
 
     # {{{ read_GO_TPM_file
@@ -119,6 +123,7 @@ class DataParse(FileIO):
             (cellular component, biological process, or molecular function).
             i.e. only GO hits corresponding to the pertinent primary GO
             category are included.
+
         3.) A concatenated GO/TPM dictionary is constructed in the form of:
 
                 dictionary = {
@@ -131,7 +136,9 @@ class DataParse(FileIO):
             Where the TPM value is the original TPM value divided by the number
             of hits for the corresponding sequence for that primary GO
             category.
+
         4.) See 5.
+
         5.) A novel concatenated GO/TPM dictionary is constructed in the form
             of:
 
@@ -139,6 +146,7 @@ class DataParse(FileIO):
 
             Where the value of cumulative TPM is the sum off all TPM values
             across all primary GO categories for that corresponding GO_ID.
+
     }}} """
 
     # {{{ build_GO_TPM_dict
@@ -310,17 +318,17 @@ arg_parser.add_argument(
         default='None'
         )
 arg_parser.add_argument(
-        '-b', '--batch', help=('Run script in batch mode. i.e. Perform '
-                               'concatenation with all respectie GO files and '
-                               'their corresponding TPM files.'
-                               ),
+        '-b', '--batch', help=(
+                'Run script in batch mode. i.e. Perform concatenation with all '
+                'GO files and their corresponding TPM files.'
+                ),
         action='store_true'
         )
 args = arg_parser.parse_args()
 # }}}
 
 
-# {{{ Instantiate instances of GO_TPM class
+# {{{ Batch
 if args.batch:
     cwd = getcwd()
     fid = listdir(cwd)
@@ -333,7 +341,7 @@ else:
 # }}}
 
 
-# {{{ Run functions for instances of GO_TPM class
+# {{{ Run
 for data in GO_TPM:
     go = data.build_GO_TPM_dict(data.go, True)
     tpm = data.build_GO_TPM_dict(data.tpm, False)
