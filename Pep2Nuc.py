@@ -278,24 +278,40 @@ class PepFastaFile(FileIO):
 
 
 # {{{ ArgParser
-arg_parser = argparse.ArgumentParser()
-arg_parser.add_argument('pep_file', type=str, help=(
-        'Name of TransDecoder output file containing peptide sequences of '
-        'interest.'
+arg_parser = argparse.ArgumentParser(
+        prog='Peptide2Nucleotide.py',
+        description=(
+                'Converts peptide sequence output from TransDecoder into '
+                'pertinent sequences, and if applicable, generates reverse '
+                'complement of aforementioned sequences.'
+                ),
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter
+        )
+arg_parser.add_argument(
+        'pep_file', type=str,
+        help=(
+                'Name of TransDecoder output file containing peptide '
+                'sequences of interest.'
+                ),
+        default=None
+        )
+arg_parser.add_argument(
+        'fasta_file', type=str,
+        help=(
+                'Name of fasta file containing nucleotide sequences of '
+                'interest. See docstrings for extract_params_from_fas and '
+                '\'::Modifiable::\' for notes on the necessary format for '
+                'fasta files.'
         ),
         default=None
         )
-arg_parser.add_argument('fasta_file', type=str, help=(
-        'Name of fasta file containing nucleotide sequences of interest. See '
-        'docstrings for extract_params_from_fas and \'::Modifiable::\' for '
-        'notes on the necessary format for fasta files.'
-        ),
-        default=None
-        )
-arg_parser.add_argument('-b', '--batch', help=(
-        'Run script in batch mode. i.e. perform sequence selection with all '
-        'peptide sequences in directory and their respective fasta files.'
-        ),
+arg_parser.add_argument(
+        '-b', '--batch',
+        help=(
+                'Run script in batch mode. i.e. perform sequence selection '
+                'with all peptide sequences in directory and their respective '
+                'fasta files.'
+                ),
         action='store_true'
         )
 args = arg_parser.parse_args()
