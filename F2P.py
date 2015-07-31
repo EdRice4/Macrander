@@ -1,32 +1,78 @@
+# {{{ Imports
 from os import getcwd, listdir
 from random import randrange
 import argparse
+# }}}
 
 
+# {{{ IDSeq
 class IDSeq(object):
 
-    """Generate two ordered lists; one containing each identifier and the
-    other containing each corresponding sequence."""
+    """ {{{ Docstrings
+
+    A class in which the fasta file is read.
+
+    Namely:
+
+            1.) Two lists are generated; one containing each identifier and
+                the other containing each corresponding sequence.
+
+    }}} """
 
     def generate_original_ids_and_seqs(self):
+
+        """ {{{ Docstrings
+        Reads fasta file into list.
+        }}} """
+
         for i in self.fasta_file:
             if i[0] == '>':
                 self.identities.append(i.strip('>\r\n'))
             else:
                 self.sequences.append(i.strip())
+# }}}
 
 
-class OriginalPhylipFile(IDSeq):
+# {{{ PhylipFile
+class PhylipFile(IDSeq):
 
-    """Write phylip file in interleaved format containing original identities
-       and their corresponding sequences."""
+    """ {{{ Docstrings
 
+    A class in which phylip file output is stored.
+
+    Namely:
+
+        1.) The original (i.e. containing the sequence IDs from the fasta file)
+            phylip file is written in sequential format.
+
+        2.) The original phylip file is written in interleaved format.
+
+        3.) The unique (i.e. containing the randomly generated [see
+            generate_unique_ids]) phylip file is written in sequential format.
+
+        4.) The unique phylip file is written in interleaved format.
+
+    }}} """
+
+    # {{{ write_original_phylip_file_sequential
     def write_original_phylip_file_sequential(self):
+
+        """ {{{ Docstrings
+        The original phylip file is written in sequential format.
+        }}} """
+
         with open(self.original_phylip_name, 'w') as phy:
             for i, j in zip(self.identities, self.sequences):
                 phy.write(i + '\t' + j + '\n')
+    # }}}
 
+    # {{{ write_original_phylip_file_interleaved
     def write_original_phylip_file_interleaved(self):
+
+        """ {{{ Docstrings
+        The original phylip file is writtin in interleaved format.
+        }}} """
+
         with open(self.original_phylip_name, 'w') as phy:
             for i, j in zip(self.identities, self.sequences):
                 phy.write(i + '\t' + j[0:50] + '\n')
@@ -35,29 +81,27 @@ class OriginalPhylipFile(IDSeq):
                 for j in self.sequences:
                     phy.write(j[i:i + 50] + '\n')
                 phy.write('\n')
+    # }}}
 
-
-class UniqueID(OriginalPhylipFile):
-
-    """Pair each original identity with randomly generated string of
-       10 digits."""
-
-    def generate_unique_ids(self):
-        for i in self.identities:
-            self.unique_identities[randrange(0, 9999999)] = i
-
-
-class UniquePhylipFile(UniqueID):
-
-    """Write phylip file in interleaved format containing original identities
-       and their corresponding sequences."""
-
+    # {{{ write_unique_phylip_file_sequential
     def write_unique_phylip_file_sequential(self):
+
+        """ {{{ Docstrings
+        The unique phylip file is written in sequential format.
+        }}} """
+
         with open(self.original_phylip_name, 'w') as phy:
             for i, j in zip(self.identities, self.sequences):
                 phy.write(i + '\t' + j + '\n')
+    # }}}
 
+    # {{{ write_unique_phylip_file_interleaved
     def write_unique_phylip_file_interleaved(self):
+
+        """ {{{ Docstrings
+        The unique phylip file is written in interleaved format.
+        }}} """
+
         with open(self.unique_phylip_name, 'w') as phy:
             for i, j in zip(self.unique_identities.itervalues(),
                             self.sequences):
@@ -67,36 +111,101 @@ class UniquePhylipFile(UniqueID):
                 for j in self.sequences:
                     phy.write(j[i:i + 50] + '\n')
                 phy.write('\n')
+    # }}}
+# }}}
 
 
-class DictionaryFile(UniquePhylipFile):
+# {{{ DictionaryFile
+class DictionaryFile(PhylipFile):
 
-    """Write original and corresponding unique identities to tab delimited
-       file."""
+    """ {{{ Docstrings
 
+    A class in which dictionary file ouput is stored.
+
+    Namely:
+
+        1.) The unique IDs are generated and stored in a dictionary in the
+            format of:
+
+                dictionary = {
+                        'XXXXXXXXX' : 'Original_ID',
+                        'XXXXXXXXX' : 'Original_ID'
+                        }
+
+        2.) The dictionary file is written in the format of:
+
+                Unique_ID\tOriginal_ID
+                'XXXXXXXXX'\t'Original_ID'
+
+            Where XXXXXXXXX is a randomly generated integer between the
+            integers 0 and 999999999.
+
+    }}} """
+
+    # {{{ generate_unique_ids
+    def generate_unique_ids(self):
+
+        """ {{{ Docstrings
+        The unique IDs are generated and stored in a dictionary.
+        }}} """
+
+        for i in self.identities:
+            self.unique_identities[randrange(0, 9999999)] = i
+    # }}}
+
+    # {{{ write_dictionary
     def write_dictionary_file(self):
+
+        """ {{{ Docstrings
+        The unique and original IDs are written to a file.
+        }}} """
+
         with open(self.dictionary_name, 'w') as dfile:
             for key, value in self.unique_identities.iteritems():
                 dfile.write(str(key) + '\t' + value + '\n')
+    # }}}
+# }}}
 
 
+# {{{ IterRegistry
 class IterRegistry(type):
 
-    """A metaclass to allow for iteration of instances of the FastaFile
-       class."""
+    """ {{{ Docstrings
+    A metaclass to allow for iteration of instances of the FastaFile class.
+    }}} """
 
+    # {{{ __iter__
     def __iter__(cls):
         return iter(cls.registry)
+    # }}}
+# }}}
 
 
+# {{{ FastaFile
 class FastaFile(DictionaryFile):
 
-    """A class in which all of the necessary parameters corresponding to each
-       respective fasta file are stored."""
+    """ {{{ Docstrings
+    A class in which all of the necessary parameters corresponding to each
+    respective fasta file are stored.
 
+
+    Namely:
+
+        1.) The sequences IDs are stored in a list, self.identities.
+
+        2.) The sequences themselves are stored in a list, self.sequences.
+
+        3.) Randomly generated unique identities (see generate_unique_ids) are
+            stored in a dictionary, self.unique_identities.
+
+    }}} """
+
+    # {{{ __metaclass__
     __metaclass__ = IterRegistry
     registry = []
+    # }}}
 
+    # {{{ __init__
     def __init__(self, fasta_file):
         self.path = fasta_file
         with open(self.path, 'r') as phy:
@@ -110,47 +219,69 @@ class FastaFile(DictionaryFile):
         self.sequences = []
         self.unique_identities = {}
         self.registry.append(self)
+    # }}}
+# }}}
 
 
-arg_parser = argparse.ArgumentParser()
-arg_parser.add_argument('fasta_file', type=str, help=('Name of fasta '
-                                                      'sequence to be '
-                                                      'converted. Specify '
-                                                      'None if running in '
-                                                      'batch mode.')
-                        )
-arg_parser.add_argument('-s', '--sequential', help=('Write phylip file in '
-                                                    'sequential format. By '
-                                                    'default, script writes '
-                                                    'in interleaved format.'),
-                        action='store_true'
-                        )
-arg_parser.add_argument('-b', '--batch', help=('Run script in batch mode; '
-                                               'i.e. convert all fasta '
-                                               'files in directory to '
-                                               'phylip.'),
-                        action='store_true'
-                        )
+# {{{ ArgParser
+arg_parser = argparse.ArgumentParser(
+        prog='Fasta2Phylip.py',
+        description=(
+                'Converts a fasta file to phylip format, either writing it in '
+                'sequential or interleaved format, depending on user '
+                'specification.'
+                ),
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter
+        )
+arg_parser.add_argument(
+        'fasta_file', type=str, help='Name of fasta sequence to be converted.',
+        default=None
+        )
+arg_parser.add_argument(
+        '-s', '--sequential', help='Write phylip file in sequential format.',
+        default=None,
+        action='store_true'
+        )
+arg_parser.add_argument(
+        '-b', '--batch', help=(
+                'Run script in batch mode; i.e. convert all fasta files in '
+                'directory to phylip.'
+                ),
+        action='store_true'
+        )
 args = arg_parser.parse_args()
+# }}}
 
+
+# {{{ Batch
 if args.batch:
     cwd = getcwd()
     fid = listdir(cwd)
-    fasta_files = filter(lambda x: '.fasta' in x, fid)
+    fasta_files = [x for x in fid if '.fasta' in x]
     for i in fasta_files:
         FastaFile(i)
 else:
     FastaFile(args.fasta_file)
+# }}}
 
+
+# {{{ Run
 for fasta in FastaFile:
     fasta.generate_original_ids_and_seqs()
     fasta.generate_unique_ids()
     if args.sequential:
-        print('sequential')
+        print(
+                'You have chosen to write the phylip file in sequential '
+                'format.'
+                )
         fasta.write_original_phylip_file_sequential()
         fasta.write_unique_phylip_file_sequential()
     else:
-        print('interleaved')
+        print(
+                'You have chosen to write the phylip file in interleaved '
+                'format.'
+                )
         fasta.write_original_phylip_file_interleaved()
         fasta.write_unique_phylip_file_interleaved()
     fasta.write_dictionary_file()
+# }}}

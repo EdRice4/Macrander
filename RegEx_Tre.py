@@ -1,21 +1,39 @@
+# {{{ Imports
 from os import getcwd, listdir
 import re
 from numpy import loadtxt
 import argparse
+# }}}
 
 
+# {{{ FileIO
 class FileIO(object):
 
-    """A class in which file input/output is handled."""
+    """ {{{ Docstrings
+    A class in which file input/output is handled.
+
+    Namely:
+
+        1.) A new tree is written to a file.
+
+    }}} """
 
     def write_tre_file(self, sub_tre_file):
+
+        """ {{{ Docstrings
+        Writes a new tree to a file.
+        }}} """
+
         with open(self.new_tre_file, 'w') as ntf:
             ntf.write(sub_tre_file)
 
 
+# {{{ RegEx
 class RegEx(FileIO):
 
-    """A class in which all regular expression functionality is stored."""
+    """ {{{ Docstrings
+    A class in which all regular expression functionality is stored.
+    }}} """
 
     def substitute(self):
         replace = dict((re.escape(k), v) for k, v in self.dfile)
