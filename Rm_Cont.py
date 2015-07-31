@@ -1,8 +1,11 @@
+# {{{ Imports
 from os import getcwd, listdir
 import re
 import argparse
+# }}}
 
 
+# {{{ RegEx
 class RegEx(object):
 
     """A class in which regular expression functionality is stored."""
@@ -60,38 +63,60 @@ class FastaFile(FileIO):
             self.rm = rem.readlines()
         self.registry.append(self)
 
-arg_parser = argparse.ArgumentParser()
-arg_parser.add_argument('fasta_file', type=str, help=('Name of fasta file'
-                                                      'containing sequences '
-                                                      'to be removed. Specify '
-                                                      'None if running in '
-                                                      'batch mode.')
-                        )
-arg_parser.add_argument('rem_file', type=str, help=('Name of file containing '
-                                                    'identities of sequences '
-                                                    'to be removed. Specify '
-                                                    'None if running in batch '
-                                                    'mode.')
-                        )
-arg_parser.add_argument('-b', '--batch', help=('Run script in batch mode. '
-                                               'i.e. perform removal with all '
-                                               'fasta sequences in directory '
-                                               'and their corresponding txt '
-                                               'files.'),
-                        action='store_true'
-                        )
+# {{{ ArgParser
+arg_parser = argparse.ArgumentParser(
+        prog='Remove_Contaminants.py',
+        description=(
+            'Intended to be used in sequence with Fasta2Phylip.py. Given an '
+            'output file \'contaminated\' with unique IDs, will substitute '
+            'these IDs with the original IDs from the fasta file.'
+            ),
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter
+        )
+arg_parser.add_argument(
+        'cont_file', type=str,
+        help=(
+                'Name of output file containing \'contaminating\' unique '
+                'sequences which are to be substituted with original IDs.'
+        ),
+        default=None
+        )
+arg_parser.add_argument(
+        'dict_file', type=str,
+        help=(
+                'Name of dictionary file (from Fasta2Phylip.py) containing '
+                'dictionary of unique and original identities.'
+                ),
+        default=None
+        )
+arg_parser.add_argument(
+        '-b', '--batch',
+        help=(
+                'Run script in batch mode. i.e. perform substitution with all '
+                'respective \'contaminated\' files and their corresponding '
+                'dictionary files.'
+                ),
+        action='store_true'
+        )
 args = arg_parser.parse_args()
+# }}}
 
+
+# {{{ Batch
 if args.batch:
     cwd = getcwd()
     fid = listdir(cwd)
-    fasta_files = sorted(filter(lambda x: '.fasta' in x, fid))
-    rem_files = sorted(filter(lambda x: '.txt' in x, fid))
+    fasta_files = sorted([x for x in fid if '.fasta' in x])
+    rem_files = sorted([x for x in fid if '.txt' in x])
     for i, j in zip(fasta_files, rem_files):
         FastaFile(i, j)
 else:
     FastaFile(args.fasta_file, args.rem_file)
+# }}}
 
+
+# {{{ Run
 for fas in FastaFile:
     fas.remove_cont()
     fas.write_new_fasta()
+# }}}

@@ -227,9 +227,16 @@ class FastaFile(DictionaryFile):
 arg_parser = argparse.ArgumentParser(
         prog='Fasta2Phylip.py',
         description=(
-                'Converts a fasta file to phylip format, either writing it in '
-                'sequential or interleaved format, depending on user '
-                'specification.'
+                'Converts a fasta file to phylip format, either writing it in'
+                'sequential or interleaved format, depending on user'
+                'specification. In total, 3 files will be produced: 1.) A '
+                'phylip file with original IDs. 2.) A phylip file with unique '
+                'IDs. 3.) A dictionary file with unique and original IDs.'
+                'The intended workflow is analgous to the following: '
+                'fasta_file >F2P.py> phylip_file_unique >Analysis> '
+                'output_unique >Rm_Cont.py> output_original. Designed to '
+                'circumvent the fact that many analysis requiring phylip '
+                'files as input truncate IDs at 10 chracters.'
                 ),
         formatter_class=argparse.ArgumentDefaultsHelpFormatter
         )
@@ -239,7 +246,6 @@ arg_parser.add_argument(
         )
 arg_parser.add_argument(
         '-s', '--sequential', help='Write phylip file in sequential format.',
-        default=None,
         action='store_true'
         )
 arg_parser.add_argument(
