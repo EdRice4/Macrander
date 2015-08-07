@@ -124,14 +124,14 @@ class SearchParse(PepFile):
 
         # Does peptide sequence contain C3C2C pattern?
         contains_C3C2C = re.search(C3C2C, pep_seq)
-        # If not, return FALSE
+        # If not, return False
         if not contains_C3C2C:
-            return FALSE
+            return False
         # If so, continue
         else:
             # Get index of pattern
             C3C2C_position = pep.index(
-                    contains_shk.group()
+                    contains_C3C2C.group()
                     )
             # Truncate peptide sequence so only includes 50 amino acids that
             # precede occurence of pattern
@@ -143,9 +143,9 @@ class SearchParse(PepFile):
             # If so, return whole peptide sequence
             if contains_CNCNC:
                 return pep_seq
-            # If not, return FALSE
+            # If not, return False
             else:
-                return FALSE
+                return False
     # }}}
 
     # {{{ filter_pep_dict
