@@ -50,6 +50,23 @@ class PepFile(object):
         pep_dict = dict(zip(ids, seqs))
         return pep_dict
     # }}}
+
+    # {{{ write_pep_dict_to_file
+    def write_pep_dict_to_file(self):
+
+        """ {{{ Docstrings
+
+        Writes the filtered pep dict into a pep file with the format of:
+
+            '>Pep_ID\n'
+            'Pep_seq\n'
+
+        }}} """
+
+
+        with open(self._filtered_pep_file, 'w') as pep_file:
+            for k, v in self._filtered_pep_dict
+    # }}}
 # }}}
 
 
