@@ -63,6 +63,16 @@ class SearchParse(PepFile):
 
     }}} """
 
+    # First, must define serach pattern
+    amino_acids = [
+            'A', 'R', 'N', 'D', 'C', 'Q', 'E', 'G', 'H', 'I', 'L', 'K', 'M',
+            'F', 'P', 'S', 'T', 'W', 'Y', 'V'
+            ]
+    # "|" in regular expression speak means "or"
+    amino_acids = '|'.join(amino_acids)
+    # Compile into regular expression patter so search can use
+    aa_pattern = re.compile(amino_acids)
+
     # {{{ search_the_3_Cs
     def search_the_3_Cs(self, pep_dict):
 
@@ -78,7 +88,7 @@ class SearchParse(PepFile):
         # aforementioned pattern will be stored.
         filtered_pep_dict = {}
         # Itereate over keys, values in pep_dict
-        for k, v in pep_dict.iteritems():
+        #for k, v in pep_dict.iteritems():
     # }}}
 # }}}
 
