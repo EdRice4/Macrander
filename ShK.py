@@ -70,10 +70,15 @@ class SearchParse(PepFile):
             ]
     # "|" in regular expression speak means "or"
     amino_acids = '|'.join(amino_acids)
-    # Compile into regular expression patter so search can use
+    # "{m}" in regular expression speak means "match exactly this number of
+    # preceding expression
+    aa_pattern = (
+            'C[' + amino_acids + ']{3}C[' + amino_acids + ']{2}C'
+            )
+    # Compile into pattern re.search can utilize
     aa_pattern = re.compile(amino_acids)
 
-    # {{{ search_the_3_Cs
+    # {{{ search_the_3_Cs (Arr, matey)
     def search_the_3_Cs(self, pep_dict):
 
         """ {{{ Docstrings
@@ -85,10 +90,13 @@ class SearchParse(PepFile):
         }}} """
 
         # Initialze empty dictionary where peptide sequences containing the
-        # aforementioned pattern will be stored.
+        # aforementioned pattern will be stored
         filtered_pep_dict = {}
         # Itereate over keys, values in pep_dict
-        #for k, v in pep_dict.iteritems():
+        for k, v in pep_dict.iteritems():
+            contains_shk = re.search(v, aa_pattern)
+            if contains_shk:
+                filtered_pep_dict[k] = v
     # }}}
 # }}}
 
