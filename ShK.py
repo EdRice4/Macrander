@@ -98,6 +98,15 @@ class SearchParse(PepFile):
 
     # {{{ filter_pep_dict
     def filter_pep_dict(self, pep_dict):
+
+        """ {{{ Docstrings
+
+        Utilizing previous function, search_the_6_Cs, filters peptide
+        sequences, only keeping those which return a TRUE value (i.e. contain
+        the aforementioned pattern).
+
+        }}} """
+
         # Initialze empty dictionary where peptide sequences containing the
         # aforementioned pattern will be stored
         filtered_pep_dict = {}
