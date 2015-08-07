@@ -209,7 +209,7 @@ class Data(SearchParse):
         self._filtered_pep_dict = self.filter_pep_dict()
         self._filtered_pep_file = pep_file.replace('.pep', '_filtered.pep')
         self.write_pep_dict_to_file()
-        self.registry.append(self)
+        # self.registry.append(self)
     # }}}
 # }}}
 
