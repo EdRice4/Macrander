@@ -73,11 +73,11 @@ class SearchParse(PepFile):
     amino_acids = '|'.join(amino_acids)
     # "{m}" in regular expression speak means "match exactly this number of
     # preceding expression"
-    aa_pattern = (
+    C3C2C = (
             'C[' + amino_acids + ']{3}C[' + amino_acids + ']{2}C'
             )
     # Compile into pattern re.search can utilize
-    aa_pattern = re.compile(amino_acids)
+    C3C2C = re.compile(amino_acids)
     # }}}
 
     # {{{ search_the_6_Cs (Arr, matey)
@@ -92,7 +92,7 @@ class SearchParse(PepFile):
         }}} """
 
         # Does peptide sequence contain pattern?
-        contains_shk = re.search(aa_pattern, pep_seq)
+        contains_shk = re.search(C3C2C, pep_seq)
         # If so, return it
         if contains_shk:
             return pep_seq
