@@ -63,6 +63,7 @@ class SearchParse(PepFile):
 
     }}} """
 
+    # {{{ SearchPattern
     # First, must define serach pattern
     amino_acids = [
             'A', 'R', 'N', 'D', 'C', 'Q', 'E', 'G', 'H', 'I', 'L', 'K', 'M',
@@ -77,6 +78,7 @@ class SearchParse(PepFile):
             )
     # Compile into pattern re.search can utilize
     aa_pattern = re.compile(amino_acids)
+    # }}}
 
     # {{{ search_the_6_Cs (Arr, matey)
     def search_the_6_Cs(self, pep_seq):
