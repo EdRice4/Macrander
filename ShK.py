@@ -100,12 +100,37 @@ if args.batch:
     # Get all files in cwd
     files = listdir(cwd)
     # Filter out pep files
+    # NOTE: All files you wish to run should contain the string '.pep' in the
+    # name.
     pep_files = [x for x in files if '.pep' in x]
     # Instantiate intances of Data calss for all pep files found
     for i in pep_files:
         Data(i)
 else:
     Data(args.pep_file)
+# }}}
+
+
+# {{{ ArgParse
+arg_parser = argparse.ArgumentParser(
+        prog='ShK.py',
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        description=(
+                'Given a list of peptide sequences, putatively containing '
+                'the ShK domain (as described in Rangaraju et al., "Potassium'
+                'Channel Modulation by a Toxin Domain in Matrix '
+                'Metalloprotease 23." DOI: 10.1074/jbc.M109.071266 and in the'
+                'Simple Modular Architecture Research Tool database:'
+                'http://smart.embl.de/smart/do_annotation.pl?DOMAIN=SM00254),'
+                'will robustly filter out those peptide sequences and '
+                'characterize the nature of each sequence.'
+                ),
+        epilog=(
+                'Note: When running in batch mode, all files you wish to run '
+                'should contain the string ".pep" in the file name.'
+                )
+        )
+
 # }}}
 
 
