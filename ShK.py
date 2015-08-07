@@ -97,14 +97,30 @@ class SearchParse(PepFile):
 
         }}} """
 
-        # Does peptide sequence contain pattern?
-        contains_shk = re.search(C3C2C, pep_seq)
-        # If so, return it
-        if contains_shk:
-            return pep_seq
+        # Does peptide sequence contain C3C2C pattern?
+        contains_C3C2C = re.search(C3C2C, pep_seq)
         # If not, return FALSE
-        else:
+        if not contains_C3C2C:
             return FALSE
+        # If so, continue
+        else:
+            # Get index of pattern
+            C3C2C_position = pep.index(
+                    contains_shk.group()
+                    )
+            # Truncate peptide sequence so only includes 50 amino acids that
+            # precede occurence of pattern
+            truncated_pep_seq = pep_seq[
+                    C3C2C_position - 50:C3C2C_position
+                    ]
+            # Does truncated peptide sequence contain 3 preceding Cs?
+            contains_CNCNC = re.seach(CNCNC, truncated_pep_seq)
+            # If so, return whole peptide sequence
+            if contains_CNCNC:
+                return pep_seq
+            # If not, return FALSE
+            else:
+                return FALSE
     # }}}
 
     # {{{ filter_pep_dict
@@ -125,6 +141,8 @@ class SearchParse(PepFile):
         for k, v in pep_dict.iteritems():
             if search_the_6_Cs(v):
                 filtered_pep_dict[k] = v
+        # Return filtered_pep_dict
+        return filtered_pep_dict
     # }}}
 # }}}
 
@@ -163,7 +181,10 @@ class Data(object):
 
     # {{{ __init__
     def __init__(self, pep_file):
-        self._pep_dict = self.read_pep_into_file(pep_file)
+        self._pep_dict = self.read_pep_into_dict(pep_file)
+        self._filtered_pep_dict = self.filter_pep_dict()
+        self._filtered_pep_file = pep_file.replace('.pep', '_filtered.pep')
+        self.write_pep_dict_into_file()
         self.registry.append(self)
     # }}}
 # }}}
