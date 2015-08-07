@@ -130,7 +130,19 @@ arg_parser = argparse.ArgumentParser(
                 'should contain the string ".pep" in the file name.'
                 )
         )
-
+arg_parser.add_argument(
+        '-pep', type=str, help='Name of pep file you wish to run.',
+        default=None
+        )
+arg_parser.add_argument(
+        '-b', '--batch',
+        help=(
+                'Run script in batch mode, i.e. run every pep file in '
+                'directory.'
+                ),
+        action='store_true'
+        )
+args = arg_parser.parse_args()
 # }}}
 
 
