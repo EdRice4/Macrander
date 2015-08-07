@@ -91,9 +91,14 @@ class SearchParse(PepFile):
 
         }}} """
 
-        contains_shk = re.search(aa_pattern, v)
+        # Does peptide sequence contain pattern?
+        contains_shk = re.search(aa_pattern, pep_seq)
+        # If so, return it
         if contains_shk:
-            filtered_pep_dict[k] = v
+            return pep_seq
+        # If not, return FALSE
+        else:
+            return FALSE
     # }}}
 
     # {{{ filter_pep_dict
@@ -112,6 +117,8 @@ class SearchParse(PepFile):
         filtered_pep_dict = {}
         # Itereate over keys, values in pep_dict
         for k, v in pep_dict.iteritems():
+            if search_the_6_Cs(v):
+                filtered_pep_dict[k] = v
     # }}}
 # }}}
 
