@@ -130,7 +130,7 @@ class SearchParse(PepFile):
         # If so, continue
         else:
             # Get index of pattern
-            start, end = contains_C3C2C.span(contains_C3C2C.group())
+            start, end = contains_C3C2C.span(contains_C3C2C.group(0))
             #C3C2C_position = pep_seq.index(
                     #contains_C3C2C.group()
                     #)
