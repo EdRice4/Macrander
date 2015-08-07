@@ -63,9 +63,15 @@ class PepFile(object):
 
         }}} """
 
-
+        # Open filtered pep file in write mode
         with open(self._filtered_pep_file, 'w') as pep_file:
-            for k, v in self._filtered_pep_dict
+            for k, v in self._filtered_pep_dict:
+                # Format ID and sequence to print correclty
+                Pep_ID = '>{0}\n'.format(k)
+                Pep_seq = '{0}\n'.format(v)
+                # Write to file
+                pep_file.write(Pep_ID)
+                pep_file.write(Pep_seq)
     # }}}
 # }}}
 
@@ -201,7 +207,7 @@ class Data(object):
         self._pep_dict = self.read_pep_into_dict(pep_file)
         self._filtered_pep_dict = self.filter_pep_dict()
         self._filtered_pep_file = pep_file.replace('.pep', '_filtered.pep')
-        self.write_pep_dict_into_file()
+        self.write_pep_dict_to_file()
         self.registry.append(self)
     # }}}
 # }}}
