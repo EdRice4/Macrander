@@ -1,3 +1,4 @@
+# {{{ Header
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
@@ -7,6 +8,7 @@
 # github: https://github.com/EdRice4
 #
 # Initiation date|time: 08/05/2015|18:16:26
+# }}}
 
 # {{{ Imports
 from os import getcwd, listdir
