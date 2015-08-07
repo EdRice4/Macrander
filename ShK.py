@@ -123,7 +123,7 @@ class SearchParse(PepFile):
         }}} """
 
         # Does peptide sequence contain C3C2C pattern?
-        contains_C3C2C = re.search(C3C2C, pep_seq)
+        contains_C3C2C = re.search(SearchParse.C3C2C, pep_seq)
         # If not, return False
         if not contains_C3C2C:
             return False
@@ -139,7 +139,7 @@ class SearchParse(PepFile):
                     C3C2C_position - 50:C3C2C_position
                     ]
             # Does truncated peptide sequence contain 3 preceding Cs?
-            contains_CNCNC = re.seach(CNCNC, truncated_pep_seq)
+            contains_CNCNC = re.seach(SearchParse.CNCNC, truncated_pep_seq)
             # If so, return whole peptide sequence
             if contains_CNCNC:
                 return pep_seq
