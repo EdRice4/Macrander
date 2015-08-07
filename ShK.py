@@ -76,8 +76,14 @@ class SearchParse(PepFile):
     C3C2C = (
             'C[' + amino_acids + ']{3}C[' + amino_acids + ']{2}C'
             )
+    # "+" in regular expression speak means "match 1 or more repetitions of
+    # preceding expression"
+    CNCNC = (
+            'C[' + amino_acids + ']+C[' + amino_acids + ']+C'
+            )
     # Compile into pattern re.search can utilize
-    C3C2C = re.compile(amino_acids)
+    C3C2C = re.compile(C3C2C)
+    CNCNC = re.compile(CNCNC)
     # }}}
 
     # {{{ search_the_6_Cs (Arr, matey)
