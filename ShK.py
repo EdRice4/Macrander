@@ -130,14 +130,18 @@ class SearchParse(PepFile):
         # If so, continue
         else:
             # Get index of pattern
-            C3C2C_position = pep_seq.index(
-                    contains_C3C2C.group()
-                    )
+            start, end = contains_C3C2C.span(contains_C3C2C.group())
+            #C3C2C_position = pep_seq.index(
+                    #contains_C3C2C.group()
+                    #)
             # Truncate peptide sequence so only includes 50 amino acids that
             # precede occurence of pattern
             truncated_pep_seq = pep_seq[
-                    C3C2C_position - 50:C3C2C_position
+                    start - 50:end
                     ]
+            #truncated_pep_seq = pep_seq[
+                    #C3C2C_position - 50:C3C2C_position
+                    #]
             # Does truncated peptide sequence contain 3 preceding Cs?
             contains_CNCNC = re.search(SearchParse.CNCNC, truncated_pep_seq)
             # If so, return whole peptide sequence
