@@ -266,8 +266,3 @@ if args.batch:
 else:
     Data(args.pep_file)
 # }}}
-
-
-# {{{ Run
-for instance in Data:
-# }}}
