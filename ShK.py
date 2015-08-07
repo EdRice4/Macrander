@@ -164,7 +164,7 @@ class SearchParse(PepFile):
         filtered_pep_dict = {}
         # Itereate over keys, values in pep_dict
         for k, v in self._pep_dict.iteritems():
-            if search_the_6_Cs(v):
+            if self.search_the_6_Cs(v):
                 filtered_pep_dict[k] = v
         # Return filtered_pep_dict
         return filtered_pep_dict
@@ -188,9 +188,8 @@ class IterRegistry(type):
 # }}}
 
 
-# TODO:Where is this inheriting from?
 # {{{ Data
-class Data(object):
+class Data(SearchParse):
 
     """ {{{ Docstrings
 
@@ -200,8 +199,8 @@ class Data(object):
     }}} """
 
     # {{{ __metaclass__
-    __metaclass__ = IterRegistry
-    registry = []
+    # __metaclass__ = IterRegistry
+    # registry = []
     # }}}
 
     # {{{ __init__
