@@ -67,7 +67,7 @@ class PepFile(object):
 
         # Open filtered pep file in write mode
         with open(self._filtered_pep_file, 'w') as pep_file:
-            for k, v in self._filtered_pep_dict:
+            for k, v in self._filtered_pep_file:
                 # Format ID and sequence to print correclty
                 Pep_ID = '>{0}\n'.format(k)
                 Pep_seq = '{0}\n'.format(v)
