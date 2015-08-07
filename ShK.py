@@ -221,11 +221,11 @@ arg_parser = argparse.ArgumentParser(
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description=(
                 'Given a list of peptide sequences, putatively containing '
-                'the ShK domain (as described in Rangaraju et al., "Potassium'
+                'the ShK domain (as described in Rangaraju et al., "Potassium '
                 'Channel Modulation by a Toxin Domain in Matrix '
-                'Metalloprotease 23." DOI: 10.1074/jbc.M109.071266 and in the'
-                'Simple Modular Architecture Research Tool database:'
-                'http://smart.embl.de/smart/do_annotation.pl?DOMAIN=SM00254),'
+                'Metalloprotease 23." DOI: 10.1074/jbc.M109.071266 and in the '
+                'Simple Modular Architecture Research Tool database: '
+                'http://smart.embl.de/smart/do_annotation.pl?DOMAIN=SM00254), '
                 'will robustly filter out those peptide sequences and '
                 'characterize the nature of each sequence.'
                 ),
