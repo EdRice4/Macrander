@@ -12,7 +12,7 @@
 
 # {{{ Imports
 from os import getcwd, listdir
-from re import match
+import re
 import argparse
 # }}}
 
