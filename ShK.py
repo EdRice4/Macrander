@@ -124,7 +124,7 @@ class SearchParse(PepFile):
     # }}}
 
     # {{{ filter_pep_dict
-    def filter_pep_dict(self, pep_dict):
+    def filter_pep_dict(self):
 
         """ {{{ Docstrings
 
@@ -138,7 +138,7 @@ class SearchParse(PepFile):
         # aforementioned pattern will be stored
         filtered_pep_dict = {}
         # Itereate over keys, values in pep_dict
-        for k, v in pep_dict.iteritems():
+        for k, v in self._pep_dict.iteritems():
             if search_the_6_Cs(v):
                 filtered_pep_dict[k] = v
         # Return filtered_pep_dict
