@@ -172,22 +172,6 @@ class SearchParse(PepFile):
 # }}}
 
 
-# {{{ IterRegistry
-#class IterRegistry(type):
-
-    #""" {{{ Docstrings
-
-    #A metaclass allowing for iterations over the Data class.
-
-    #}}} """
-
-    ## {{{ __iter__
-    #def __iter__(cls):
-        #return iter(cls.registry)
-    # }}}
-# }}}
-
-
 # {{{ Data
 class Data(SearchParse):
 
@@ -197,11 +181,6 @@ class Data(SearchParse):
     is stored.
 
     }}} """
-
-    # {{{ __metaclass__
-    # __metaclass__ = IterRegistry
-    # registry = []
-    # }}}
 
     # {{{ __init__
     def __init__(self, pep_file):
