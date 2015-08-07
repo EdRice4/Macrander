@@ -53,6 +53,36 @@ class PepFile(object):
 # }}}
 
 
+# {{{ SearchParse
+class SearchParse(PepFile):
+
+    """ {{{ Docstrings
+
+    A class in which all regular expression searching and subsequent data
+    parsing is stored.
+
+    }}} """
+
+    # {{{ search_the_3_Cs
+    def search_the_3_Cs(self, pep_dict):
+
+        """ {{{ Docstrings
+
+        Utilizing regular expressions (as provided by the "re" python module),
+        iterates over the values of the pep_dict, searching for pattern:
+        C???C??C where ? = any amino acid.
+
+        }}} """
+
+        # Initialze empty dictionary where peptide sequences containing the
+        # aforementioned pattern will be stored.
+        filtered_pep_dict = {}
+        # Itereate over keys, values in pep_dict
+        for k, v in pep_dict.iteritems():
+    # }}}
+# }}}
+
+
 # {{{ IterRegistry
 class IterRegistry(type):
 
@@ -93,24 +123,6 @@ class Data(object):
 # }}}
 
 
-# {{{ Batch
-if args.batch:
-    # Get current working directory
-    cwd = getcwd()
-    # Get all files in cwd
-    files = listdir(cwd)
-    # Filter out pep files
-    # NOTE: All files you wish to run should contain the string '.pep' in the
-    # name.
-    pep_files = [x for x in files if '.pep' in x]
-    # Instantiate intances of Data calss for all pep files found
-    for i in pep_files:
-        Data(i)
-else:
-    Data(args.pep_file)
-# }}}
-
-
 # {{{ ArgParse
 arg_parser = argparse.ArgumentParser(
         prog='ShK.py',
@@ -143,6 +155,24 @@ arg_parser.add_argument(
         action='store_true'
         )
 args = arg_parser.parse_args()
+# }}}
+
+
+# {{{ Batch
+if args.batch:
+    # Get current working directory
+    cwd = getcwd()
+    # Get all files in cwd
+    files = listdir(cwd)
+    # Filter out pep files
+    # NOTE: All files you wish to run should contain the string '.pep' in the
+    # name.
+    pep_files = [x for x in files if '.pep' in x]
+    # Instantiate intances of Data calss for all pep files found
+    for i in pep_files:
+        Data(i)
+else:
+    Data(args.pep_file)
 # }}}
 
 
