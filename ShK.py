@@ -130,7 +130,7 @@ class SearchParse(PepFile):
         # If so, continue
         else:
             # Get index of pattern
-            C3C2C_position = pep.index(
+            C3C2C_position = pep_seq.index(
                     contains_C3C2C.group()
                     )
             # Truncate peptide sequence so only includes 50 amino acids that
