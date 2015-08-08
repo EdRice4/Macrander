@@ -70,9 +70,9 @@ class PepFile(object):
         # Open filtered pep file in write mode
         with open(self._filtered_pep_file, 'w') as pep_file:
             for k, v in self._filtered_pep_dict.iteritems():
+                # Set values for readability
                 Pep_ID = k
-                # Replace each delimiting character; easier to read
-                #Pep_seq = v
+                # Join values with newline character; easier to read
                 Pep_seq = '\n'.join(v)
                 # Write to file
                 pep_file.write(Pep_ID)
