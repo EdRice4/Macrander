@@ -211,7 +211,9 @@ arg_parser = argparse.ArgumentParser(
                 ),
         epilog=(
                 'Note: When running in batch mode, all files you wish to run '
-                'should contain the string ".pep" in the file name.'
+                'should contain the string ".pep" in the file name. For '
+                'explanations on potentially useful, user configurable '
+                'variables, search for ::MODIFIABLE:: in file.'
                 )
         )
 arg_parser.add_argument(
