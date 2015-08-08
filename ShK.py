@@ -72,6 +72,7 @@ class PepFile(object):
             for k, v in self._filtered_pep_dict.iteritems():
                 Pep_ID = k
                 # Replace each delimiting character; easier to read
+                #Pep_seq = v
                 Pep_seq = '\n'.join(v)
                 # Write to file
                 pep_file.write(Pep_ID)
@@ -127,7 +128,7 @@ class SearchParse(PepFile):
         putative_ShK_domains = re.findall(SearchParse.ShK_domain, pep_seq)
         # If matches found, return list of all matches (as strings)
         if putative_ShK_domains:
-            return pep_seq
+            return putative_ShK_domains
         # Else, return false
         else:
             return False
