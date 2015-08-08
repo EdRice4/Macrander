@@ -72,7 +72,7 @@ class PepFile(object):
             for k, v in self._filtered_pep_dict.iteritems():
                 Pep_ID = k
                 # Replace each delimiting character; easier to read
-                Pep_seqs = map(lambda x: x.append('\n'), v)
+                Pep_seqs = map(lambda x: x + '\n', v)
                 # Write to file
                 pep_file.write(Pep_ID)
                 for Pep_seq in Pep_seqs:
