@@ -100,6 +100,9 @@ class SearchParse(PepFile):
     # the preceding expression", "+" means "match 1 or more repetitions of
     # preceding expression", and {m,n} means "match m through n repetitions of
     # preceding expression, attempting to match as many as possible"
+    # ::MODIFIABLE::
+    # NOTE: If you would like to search further upstream for preceding
+    # cysteines, simply modify second integer in {1,50}
     ShK_domain = (
             'C[' + amino_acids + ']+C[' + amino_acids + ']+C[' + amino_acids +
             ']{1,50}C[' + amino_acids + ']{3}C[' + amino_acids + ']{2}C'
@@ -133,6 +136,8 @@ class SearchParse(PepFile):
             pep_seq.insert(
                     match.end(), '|'
                     )
+        # Return modified peptide sequence
+        return pep_seq
     # }}}
 
     # {{{ filter_pep_dict
