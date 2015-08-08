@@ -73,7 +73,7 @@ class PepFile(object):
                 # Set values for readability
                 Pep_ID = k
                 # Join values with newline character; easier to read
-                Pep_seq = '\n'.join(v)
+                Pep_seq = map(lambda x: x + '\n', v)
                 # Write to file
                 pep_file.write(Pep_ID)
                 pep_file.write(Pep_seq)
