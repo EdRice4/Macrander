@@ -168,8 +168,13 @@ class SearchParse(PepFile):
         filtered_pep_dict = {}
         # Itereate over keys, values in pep_dict
         for k, v in self._pep_dict.iteritems():
-            if self.search_the_6_Cs(v):
-                filtered_pep_dict[k] = v
+            # Set values for readability
+            Pep_ID = k
+            Pep_seq = self.search_the_6_Cs(v)
+            # If it contains the ShK domain, include it in filtered pep dict,
+            # else, discard
+            if Pep_seq:
+                filtered_pep_dict[Pep_ID] = Pep_seq
         # Return filtered_pep_dict
         return filtered_pep_dict
     # }}}
