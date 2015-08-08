@@ -128,6 +128,11 @@ class SearchParse(PepFile):
             # Insert pipe character "|" at beginning and end of each putative
             # ShK domain, later used for pretty printing
             pep_seq.insert(
+                    match.start(), '|'
+                    )
+            pep_seq.insert(
+                    match.end(), '|'
+                    )
     # }}}
 
     # {{{ filter_pep_dict
