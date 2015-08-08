@@ -124,7 +124,7 @@ class SearchParse(PepFile):
         }}} """
 
         # Does peptide sequence contain ShK domain?
-        putative_ShK_domains = re.finditer(SearchParse.ShK_domain, pep_seq)
+        putative_ShK_domains = re.findall(SearchParse.ShK_domain, pep_seq)
         # Convert to list to check for extant matches; finditer always
         # returns callable iterator, regardless of presence/absence of
         # match(es)
@@ -136,8 +136,12 @@ class SearchParse(PepFile):
         # Convert peptide sequence into list to allow for insertion of
         # delimiting characters
         pep_seq = list(pep_seq)
-        # delimiting characters
-        for match in putative_ShK_domains:
+        # Need to iterate from end to beginning, otherwise the indices
+        # become corrupted
+        # Get list, 0:# of ShK domains
+        number_ShK_domains = range(0, len(boolean_ShK))
+        # Iterate from end to beginning
+        for match in number_ShK_domains[::-1]:
             # Insert deilimiting characters at beginning and end of each
             # putative ShK domain; later used for pretty printing
             pep_seq.insert(
