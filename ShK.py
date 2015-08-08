@@ -217,7 +217,7 @@ arg_parser = argparse.ArgumentParser(
                 )
         )
 arg_parser.add_argument(
-        '-pep', type=str, help='Name of pep file you wish to run.',
+        '-pep_file', type=str, help='Name of pep file you wish to run.',
         default=None
         )
 arg_parser.add_argument(
