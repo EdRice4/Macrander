@@ -98,13 +98,17 @@ class SearchParse(PepFile):
     amino_acids = '|'.join(amino_acids)
     # "{m}" in regular expression speak means "match exactly this number of
     # preceding expression"
-    C3C2C = (
-            'C[' + amino_acids + ']{3}C[' + amino_acids + ']{2}C'
-            )
+    #C3C2C = (
+            #'C[' + amino_acids + ']{3}C[' + amino_acids + ']{2}C'
+            #)
     # "+" in regular expression speak means "match 1 or more repetitions of
     # preceding expression"
-    CNCNC = (
-            'C[' + amino_acids + ']+C[' + amino_acids + ']+C'
+    #CNCNC = (
+            #'C[' + amino_acids + ']+C[' + amino_acids + ']+C'
+            #)
+    ShK_pattern = (
+            'C[' + amino_acids + ']+C[' + amino_acids + ']+C[' + amino_acids +
+            ']{1,50}C[' + amino_acids + ']{3}C[' + amino_acids + ']{2}C'
             )
     # Compile into pattern re.search can utilize
     C3C2C = re.compile(C3C2C)
@@ -127,16 +131,21 @@ class SearchParse(PepFile):
         # If not, return False
         if not contains_C3C2C:
             return False
+        # Else, continue
+        # Truncate peptide sequence so only includes 50 amino acids that
+        # precede occurence of pattern
+        truncated_pep_seq = pep_seq[
+                contains_C3C2C.start() - 50:contains_C3C2C.end()
+                ]
+        # Does truncated peptide sequence contain 3 preceding Cs?
+        contains_CNCNC = re.search(SearchParse.CNCNC, truncated_pep_seq)
+        # If not, return False
+        if not contains_CNCNC:
+            return False
+        # Else, continue
+        # If so, return whole peptide sequence
         # If so, continue
         else:
-            # Truncate peptide sequence so only includes 50 amino acids that
-            # precede occurence of pattern
-            truncated_pep_seq = pep_seq[
-                    contains_C3C2C.start() - 50:contains_C3C2C.end()
-                    ]
-            # Does truncated peptide sequence contain 3 preceding Cs?
-            contains_CNCNC = re.search(SearchParse.CNCNC, truncated_pep_seq)
-            # If so, return whole peptide sequence
             if contains_CNCNC:
                 return pep_seq
             # If not, return False
