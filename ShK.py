@@ -70,10 +70,8 @@ class PepFile(object):
             for k, v in self._filtered_pep_dict.iteritems():
                 # Format ID and sequence to print correclty
                 Pep_ID = '>{0}'.format(k)
-                # Replace each delimiting character at beginning of putative
-                # ShK domain with newline so beginning is written on new line;
-                # easier to read
-                Pep_seq = v.replace('/', '\n')
+                # Replace each delimiting character; easier to read
+                Pep_seq = v.replace('|', '\n')
                 # Write to file
                 pep_file.write(Pep_ID)
                 pep_file.write(Pep_seq)
@@ -137,7 +135,7 @@ class SearchParse(PepFile):
             # Insert deilimiting characters at beginning and end of each
             # putative ShK domain, later used for pretty printing
             pep_seq.insert(
-                    match.start(), '/|'
+                    match.start(), '|'
                     )
             pep_seq.insert(
                     match.end(), '|'
