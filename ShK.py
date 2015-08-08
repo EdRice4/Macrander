@@ -127,6 +127,9 @@ class SearchParse(PepFile):
         if not contains_ShK:
             return False
         # If so, continue
+        # Convert peptide sequence into list to allow for insertion of
+        pep_seq = list(pep_seq)
+        # delimiting characters
         for match in contains_ShK:
             # Insert pipe character "|" at beginning and end of each putative
             # ShK domain, later used for pretty printing
@@ -136,6 +139,8 @@ class SearchParse(PepFile):
             pep_seq.insert(
                     match.end(), '/'
                     )
+        # Convert peptide sequence back to string
+        pep_seq = ''.join(pep_seq)
         # Return modified peptide sequence
         return pep_seq
     # }}}
