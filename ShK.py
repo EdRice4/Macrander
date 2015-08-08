@@ -70,7 +70,10 @@ class PepFile(object):
             for k, v in self._filtered_pep_dict.iteritems():
                 # Format ID and sequence to print correclty
                 Pep_ID = '>{0}'.format(k)
-                Pep_seq = '{0}\n'.format(v)
+                # Replace each delimiting character at beginning of putative
+                # ShK domain with newline so beginning is written on new line;
+                # easier to read
+                Pep_seq = v.replace('/', '\n')
                 # Write to file
                 pep_file.write(Pep_ID)
                 pep_file.write(Pep_seq)
