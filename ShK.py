@@ -15,6 +15,7 @@
 from os import getcwd, listdir
 import re
 import argparse
+import sys
 # }}}
 
 
@@ -246,5 +247,10 @@ if args.batch:
     for i in pep_files:
         Data(i)
 else:
+    if not args.pep_file:
+        sys.exit(
+                'You did not specify a pep file to run nor did you run the '
+                'script in batch mode. Try again.'
+                )
     Data(args.pep_file)
 # }}}
