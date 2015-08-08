@@ -125,23 +125,12 @@ class SearchParse(PepFile):
 
         # Does peptide sequence contain ShK domain?
         putative_ShK_domains = re.findall(SearchParse.ShK_domain, pep_seq)
-        # If no matches, return False
-        if not putative_ShK_domains:
+        # If matches found, return list of all matches (as strings)
+        if putative_ShK_domains:
+            return pep_seq
+        # Else, return false
+        else:
             return False
-        # If matches, continue
-        for match in number_ShK_domains[::-1]:
-            # Insert deilimiting characters at beginning and end of each
-            # putative ShK domain; later used for pretty printing
-            pep_seq.insert(
-                    match.start(), '|'
-                    )
-            pep_seq.insert(
-                    match.end(), '|'
-                    )
-        # Convert peptide sequence back to string
-        pep_seq = ''.join(pep_seq)
-        # Return modified peptide sequence
-        return pep_seq
     # }}}
 
     # {{{ filter_pep_dict
