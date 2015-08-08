@@ -124,12 +124,10 @@ class SearchParse(PepFile):
         if not contains_ShK:
             return False
         # If so, continue
-        else:
-            if contains_CNCNC:
-                return pep_seq
-            # If not, return False
-            else:
-                return False
+        for match in contains_ShK:
+            # Insert pipe character "|" at beginning and end of each putative
+            # ShK domain, later used for pretty printing
+            pep_seq.insert(
     # }}}
 
     # {{{ filter_pep_dict
