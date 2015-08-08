@@ -124,19 +124,6 @@ class SearchParse(PepFile):
         # If not, return False
         if not contains_ShK:
             return False
-        # Else, continue
-        # Truncate peptide sequence so only includes 50 amino acids that
-        # precede occurence of pattern
-        truncated_pep_seq = pep_seq[
-                contains_ShK.start() - 50:contains_ShK.end()
-                ]
-        # Does truncated peptide sequence contain 3 preceding Cs?
-        contains_CNCNC = re.search(SearchParse.CNCNC, truncated_pep_seq)
-        # If not, return False
-        if not contains_CNCNC:
-            return False
-        # Else, continue
-        # If so, return whole peptide sequence
         # If so, continue
         else:
             if contains_CNCNC:
