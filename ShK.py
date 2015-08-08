@@ -100,12 +100,12 @@ class SearchParse(PepFile):
     # the preceding expression", "+" means "match 1 or more repetitions of
     # preceding expression", and {m,n} means "match m through n repetitions of
     # preceding expression, attempting to match as many as possible"
-    ShK_pattern = (
+    ShK_domain = (
             'C[' + amino_acids + ']+C[' + amino_acids + ']+C[' + amino_acids +
             ']{1,50}C[' + amino_acids + ']{3}C[' + amino_acids + ']{2}C'
             )
     # Compile into pattern re.search can utilize
-    ShK_pattern = re.compile(ShK_pattern)
+    ShK_domain = re.compile(ShK_domain)
     # }}}
 
     # {{{ search_the_6_Cs (Arr, matey)
@@ -119,8 +119,8 @@ class SearchParse(PepFile):
 
         }}} """
 
-        # Does peptide sequence contain C3C2C pattern?
-        contains_ShK = re.search(SearchParse.ShK_pattern, pep_seq)
+        # Does peptide sequence contain ShK domain?
+        contains_ShK = re.search(SearchParse.ShK_domain, pep_seq)
         # If not, return False
         if not contains_ShK:
             return False
