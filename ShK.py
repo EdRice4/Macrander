@@ -134,6 +134,7 @@ class SearchParse(PepFile):
             return False
         # If matches, continue
         # Convert peptide sequence into list to allow for insertion of
+        # delimiting characters
         pep_seq = list(pep_seq)
         # delimiting characters
         for match in putative_ShK_domains:
