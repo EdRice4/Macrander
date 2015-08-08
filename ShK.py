@@ -96,23 +96,16 @@ class SearchParse(PepFile):
             ]
     # "|" in regular expression speak means "or"
     amino_acids = '|'.join(amino_acids)
-    # "{m}" in regular expression speak means "match exactly this number of
-    # preceding expression"
-    #C3C2C = (
-            #'C[' + amino_acids + ']{3}C[' + amino_acids + ']{2}C'
-            #)
-    # "+" in regular expression speak means "match 1 or more repetitions of
-    # preceding expression"
-    #CNCNC = (
-            #'C[' + amino_acids + ']+C[' + amino_acids + ']+C'
-            #)
+    # In regular expression speak, "{m}" means "match exactly this number of
+    # the preceding expression", "+" means "match 1 or more repetitions of
+    # preceding expression", and {m,n} means "match m through n repetitions of
+    # preceding expression, attempting to match as many as possible"
     ShK_pattern = (
             'C[' + amino_acids + ']+C[' + amino_acids + ']+C[' + amino_acids +
             ']{1,50}C[' + amino_acids + ']{3}C[' + amino_acids + ']{2}C'
             )
     # Compile into pattern re.search can utilize
-    C3C2C = re.compile(C3C2C)
-    CNCNC = re.compile(CNCNC)
+    ShK_pattern = re.compile(ShK_pattern)
     # }}}
 
     # {{{ search_the_6_Cs (Arr, matey)
@@ -127,15 +120,15 @@ class SearchParse(PepFile):
         }}} """
 
         # Does peptide sequence contain C3C2C pattern?
-        contains_C3C2C = re.search(SearchParse.C3C2C, pep_seq)
+        contains_ShK = re.search(SearchParse.ShK_pattern, pep_seq)
         # If not, return False
-        if not contains_C3C2C:
+        if not contains_ShK:
             return False
         # Else, continue
         # Truncate peptide sequence so only includes 50 amino acids that
         # precede occurence of pattern
         truncated_pep_seq = pep_seq[
-                contains_C3C2C.start() - 50:contains_C3C2C.end()
+                contains_ShK.start() - 50:contains_ShK.end()
                 ]
         # Does truncated peptide sequence contain 3 preceding Cs?
         contains_CNCNC = re.search(SearchParse.CNCNC, truncated_pep_seq)
