@@ -138,7 +138,7 @@ class SearchParse(PepFile):
         # delimiting characters
         for match in putative_ShK_domains:
             # Insert deilimiting characters at beginning and end of each
-            # putative ShK domain, later used for pretty printing
+            # putative ShK domain; later used for pretty printing
             pep_seq.insert(
                     match.start(), '|'
                     )
