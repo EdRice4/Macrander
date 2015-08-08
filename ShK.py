@@ -131,8 +131,8 @@ class SearchParse(PepFile):
         pep_seq = list(pep_seq)
         # delimiting characters
         for match in contains_ShK:
-            # Insert pipe character "|" at beginning and end of each putative
-            # ShK domain, later used for pretty printing
+            # Insert deilimiting characters at beginning and end of each
+            # putative ShK domain, later used for pretty printing
             pep_seq.insert(
                     match.start(), '\\'
                     )
