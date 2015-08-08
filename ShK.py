@@ -123,15 +123,19 @@ class SearchParse(PepFile):
         }}} """
 
         # Does peptide sequence contain ShK domain?
-        contains_ShK = re.finditer(SearchParse.ShK_domain, pep_seq)
-        # If not, return False
-        if not contains_ShK:
+        putative_ShK_domains = re.finditer(SearchParse.ShK_domain, pep_seq)
+        # Convert to list to check for existence of match; finditer always
+        # returns callable iterator, regardless of presence/absence of
+        # match
+        boolean_ShK = [match.group() for match in putative_ShK_domains]
+        # If no matches, return False
+        if not boolean_ShK:
             return False
-        # If so, continue
+        # If matches, continue
         # Convert peptide sequence into list to allow for insertion of
         pep_seq = list(pep_seq)
         # delimiting characters
-        for match in contains_ShK:
+        for match in putative_ShK_domains:
             # Insert deilimiting characters at beginning and end of each
             # putative ShK domain, later used for pretty printing
             pep_seq.insert(
