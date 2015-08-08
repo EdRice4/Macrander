@@ -72,8 +72,13 @@ class PepFile(object):
             for k, v in self._filtered_pep_dict.iteritems():
                 # Set values for readability
                 Pep_ID = k
-                # Join values with newline character; easier to read
-                Pep_seq = map(lambda x: x + '\n', v)
+                # Values must be a string in order to write
+                # If only one match returned, append newline "\n" character
+                if len(v) == 1:
+                    Pep_seq = v[0] + '\n'
+                # Else, join each item in list with newline character
+                else:
+                    Pep_seq = '\n'.join(v)
                 # Write to file
                 pep_file.write(Pep_ID)
                 pep_file.write(Pep_seq)
