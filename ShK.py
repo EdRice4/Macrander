@@ -125,9 +125,9 @@ class SearchParse(PepFile):
 
         # Does peptide sequence contain ShK domain?
         putative_ShK_domains = re.finditer(SearchParse.ShK_domain, pep_seq)
-        # Convert to list to check for existence of match; finditer always
+        # Convert to list to check for extant matches; finditer always
         # returns callable iterator, regardless of presence/absence of
-        # match
+        # match(es)
         boolean_ShK = [match.group() for match in putative_ShK_domains]
         # If no matches, return False
         if not boolean_ShK:
