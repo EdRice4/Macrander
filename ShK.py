@@ -134,10 +134,10 @@ class SearchParse(PepFile):
             # Insert deilimiting characters at beginning and end of each
             # putative ShK domain, later used for pretty printing
             pep_seq.insert(
-                    match.start(), '\\'
+                    match.start(), '/|'
                     )
             pep_seq.insert(
-                    match.end(), '/'
+                    match.end(), '|'
                     )
         # Convert peptide sequence back to string
         pep_seq = ''.join(pep_seq)
