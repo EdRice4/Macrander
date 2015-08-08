@@ -120,7 +120,7 @@ class SearchParse(PepFile):
         }}} """
 
         # Does peptide sequence contain ShK domain?
-        contains_ShK = re.search(SearchParse.ShK_domain, pep_seq)
+        contains_ShK = re.finditer(SearchParse.ShK_domain, pep_seq)
         # If not, return False
         if not contains_ShK:
             return False
