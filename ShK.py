@@ -129,14 +129,6 @@ class SearchParse(PepFile):
         if not putative_ShK_domains:
             return False
         # If matches, continue
-        # Convert peptide sequence into list to allow for insertion of
-        # delimiting characters
-        pep_seq = list(pep_seq)
-        # Need to iterate from end to beginning, otherwise the indices
-        # become corrupted
-        # Get list, 0:# of ShK domains
-        number_ShK_domains = range(0, len(boolean_ShK))
-        # Iterate from end to beginning
         for match in number_ShK_domains[::-1]:
             # Insert deilimiting characters at beginning and end of each
             # putative ShK domain; later used for pretty printing
