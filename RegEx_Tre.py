@@ -1,8 +1,22 @@
+# {{{ Header
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+# Code written by: Edwin Rice
+# email: edwinricethe4th@gmail.com
+# phone: +1 (513) 426-4187
+# github: https://github.com/EdRice4
+#
+# Initiation date|time: 08/10/2015|12:59:38
+# }}}
+
+
 # {{{ Imports
 from os import getcwd, listdir
 import re
 from numpy import loadtxt
 import argparse
+from sys import exit
 # }}}
 
 
@@ -10,29 +24,30 @@ import argparse
 class FileIO(object):
 
     """ {{{ Docstrings
+
     A class in which file input/output is handled.
-
-    Namely:
-
-        1.) A new tree is written to a file.
 
     }}} """
 
     def write_tre_file(self, sub_tre_file):
 
         """ {{{ Docstrings
+
         Writes a new tree to a file.
+
         }}} """
 
-        with open(self.new_tre_file, 'w') as ntf:
-            ntf.write(sub_tre_file)
+        with open(self.new_tre_file, 'w') as new_tree_file:
+            new_tree_file.write(sub_tre_file)
 
 
 # {{{ RegEx
 class RegEx(FileIO):
 
     """ {{{ Docstrings
+
     A class in which all regular expression functionality is stored.
+
     }}} """
 
     def substitute(self):
@@ -53,8 +68,12 @@ class IterRegistry(type):
 
 class TreFile(RegEx):
 
-    """A class in which all the necessary parameters corresponding to each
-       respective tre file are stored."""
+    """ {{{ Docstrings
+
+    A class in which all the necessary parameters corresponding to each
+    respective tre file are stored.
+
+    }}} """
 
     __metaclass__ = IterRegistry
     registry = []
@@ -67,34 +86,88 @@ class TreFile(RegEx):
         self.new_tre_file = tre_file.replace('.tre', '_subbed.tre')
         self.registry.append(self)
 
-arg_parser = argparse.ArgumentParser()
-arg_parser.add_argument('tre_file', type=str, help=('Name of tre file to be '
-                                                    'substituted. Specify '
-                                                    'None if running in '
-                                                    'batch mode.')
-                        )
-arg_parser.add_argument('dict_file', type=str, help=('Name of dictionary '
-                                                     'file. Specify None if '
-                                                     'running in batch mode.')
-                        )
-arg_parser.add_argument('-b', '--batch', help=('Run script in batch mode. '
-                                               'i.e. perform substition on '
-                                               'all tre files directory with '
-                                               'their respective dictionary '
-                                               'files.'),
-                        action='store_true'
-                        )
-args = arg_parser.parse_args()
 
+# {{{ ArgParse
+arg_parser = argparse.ArgumentParser(
+        prog='RegEx_Tre.py',
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        description=(
+            'A script intended to be used as the final component in the '
+            'workflow of F2P.py. F2P.py produces three output files: 1.) '
+            'A phylip file containing "original" IDs and sequences; 2.) '
+            'A phylip file containing "substitue" IDs and seqeunces (i.e. '
+            '~10 digit integers); 3.) A dictionary file containing each '
+            'original ID and its repective substitute ID. This script accepts '
+            'a tree ouput file (or any output file) containing the substitute '
+            'IDs and replaces each, utilizing regular expressions, with its '
+            'respective original ID as defined by the dictionary file.'
+            ),
+        epilog=(
+            'Note: When running in batch mode, all tre files you wish to run '
+            'should contain the string ".tre" in the file name while all '
+            'dictionary files you wish to run should contain the string '
+            '".txt" in the file name. Furthermore, each tree file and its '
+            'respective dictionary file should be named analogously. For '
+            'instance, "Grammostola_rosea.tre" and "Grammostola_rosea.txt."'
+            )
+        )
+arg_parser.add_argument(
+        'tre_file', type=str, help='Name of tre file to be substituted.',
+        default=None
+        )
+arg_parser.add_argument(
+        'dict_file', type=str,
+        help=(
+                'Name of corresponding dictionary file containing original '
+                'IDs and respective substitute IDs.'
+                ),
+        default=None
+        )
+arg_parser.add_argument(
+        '-b', '--batch',
+        help=(
+                'Run script in batch mode. i.e. perform substition on all tre '
+                'files withint directory and their respective dictionary '
+                'files.'
+                ),
+        action='store_true'
+        )
+args = arg_parser.parse_args()
+# }}}
+
+
+# {{{ Batch
+# Instantiate instance of TreFile class with each tre file within directory and
+# its corresponding dictionary file
 if args.batch:
+    # Get current working directory
     cwd = getcwd()
+    # Get all files in cwd
     fid = listdir(cwd)
+    # Filter out tre files
+    # NOTE: All tree files you wish to run should contain the string ".tre"
+    # and all files within the directory containing this string will be run
     tre_files = sorted(filter(lambda x: '.tre' in x, fid))
+    # Filter out dictionary files
+    # NOTE: All dictionary files you wish to run should contain the string
+    # ".txt" and all files within the directory containing this string will be
+    # run
     dict_files = sorted(filter(lambda x: '.txt' in x, fid))
+    # Instantiate instance of TreFile class for each tree file and its
+    # respective dictionary file found
     for i, j in zip(tre_files, dict_files):
         TreFile(i, j)
+# Else, utilize user-specifed strings to instantiate single instance of PepFile
+# class
 else:
+    # Exit if no proper tree/dictionary file specified.
+    if not args.tree_file or args.dict_file:
+        exit(
+                'You did not specify a tree/dictionary file to run nor did '
+                'you run the script in batch mode. Try again.'
+                )
     TreFile(args.tre_file, args.dict_file)
+# }}}
 
 for tre in TreFile:
     sub_tre_file = tre.substitute()
