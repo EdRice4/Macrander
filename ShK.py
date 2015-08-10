@@ -190,7 +190,6 @@ class Data(SearchParse):
         self._filtered_pep_dict = self.filter_pep_dict()
         self._filtered_pep_file = pep_file.replace('.pep', '_filtered.pep')
         self.write_pep_dict_to_file()
-        # self.registry.append(self)
     # }}}
 # }}}
 
@@ -211,7 +210,8 @@ arg_parser = argparse.ArgumentParser(
                 ),
         epilog=(
                 'Note: When running in batch mode, all files you wish to run '
-                'should contain the string ".pep" in the file name. For '
+                'should contain the string ".pep" in the file name and all '
+                'files containing this string in the name will be run. For '
                 'explanations on potentially useful, user configurable '
                 'variables, search for ::MODIFIABLE:: in file.'
                 )
@@ -240,7 +240,8 @@ if args.batch:
     files = listdir(cwd)
     # Filter out pep files
     # NOTE: All files you wish to run should contain the string '.pep' in the
-    # name.
+    # name and all files containing this string will be run if you specify
+    # the batch flag.
     pep_files = [x for x in files if '.pep' in x]
     # Instantiate intances of Data calss for all pep files found
     for i in pep_files:
