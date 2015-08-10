@@ -57,7 +57,7 @@ class FileIO(object):
 
                 }
 
-        """
+         }}} """
 
         # Initiate empty dictionary to store IDs
         IDs = {}
@@ -85,9 +85,12 @@ class FileIO(object):
 
         }}} """
 
+        # Open file in write mode
         with open(self.new_tre_file, 'w') as new_tree_file:
+            # Write to file
             new_tree_file.write(sub_tre_file)
     # }}}
+# }}}
 
 
 # {{{ RegEx
@@ -99,30 +102,49 @@ class RegEx(FileIO):
 
     }}} """
 
+    # {{{ substitute
     def substitute(self):
-        replace = dict((re.escape(k), v) for k, v in self.dfile)
-        pattern = re.compile('|'.join(replace.iterkeys()))
-        sub_tre_file = pattern.sub(lambda m: replace[re.escape(m.group(0))],
-                                   self.tre)
-        return sub_tre_file
+
+        """ {{{ Docstrings
+
+        Performs substitution, utlizing functionality provided by the "re"
+        python module, substituting all substituted IDs with their respective
+        original IDs.
+
+        }}} """
+
+        # Compile substitute IDs into pattern re.sub can utilize;  "|" in
+        # regular expression speak means "or"
+        substitute_ID_pattern = re.compile(
+                '|'.join(self._dict.iterkeys())
+                )
+        # Perform substitution
+        sub_tree_file = substitute_ID_pattern.sub(
+                lambda match: self._dict[re.escape(match.group())], self.tree
+                )
+        return sub_tree_file
 # }}}
 
 
+# {{{ TreFile
 class TreFile(RegEx):
 
     """ {{{ Docstrings
 
     A class in which all the necessary parameters corresponding to each
-    respective tre file are stored.
+    respective tree file are stored.
 
     }}} """
 
+    # {{{ __init__
     def __init__(self, tree_file, dict_file):
         self._tree = self.read_tree_file(tree_file)
         self._dict = self.read_dict_file(dict_file)
         self._sub_tree_file = self._tree.replace('.tre', '_subbed.tre')
         self._sub_tree = self.substitute()
         self.write_tree_file()
+    # }}}
+# }}}
 
 # {{{ ArgParse
 arg_parser = argparse.ArgumentParser(
