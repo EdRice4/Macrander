@@ -108,14 +108,6 @@ class RegEx(FileIO):
 # }}}
 
 
-class IterRegistry(type):
-
-    """A class allowing for interation over instances of TreFile class."""
-
-    def __iter__(cls):
-        return iter(cls.registry)
-
-
 class TreFile(RegEx):
 
     """ {{{ Docstrings
@@ -125,15 +117,12 @@ class TreFile(RegEx):
 
     }}} """
 
-    __metaclass__ = IterRegistry
-    registry = []
-
     def __init__(self, tree_file, dict_file):
         self._tree = self.read_tree_file(tree_file)
         self._dict = self.read_dict_file(dict_file)
-        self.new_tre_file = tre_file.replace('.tre', '_subbed.tre')
-        self.registry.append(self)
-
+        self._sub_tree_file = self._tree.replace('.tre', '_subbed.tre')
+        self._sub_tree = self.substitute()
+        self.write_tree_file()
 
 # {{{ ArgParse
 arg_parser = argparse.ArgumentParser(
