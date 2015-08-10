@@ -99,6 +99,8 @@ class SearchParse(PepFile):
 
     # {{{ SearchPattern
     # First, must define serach pattern
+    # All possible values in peptide sequence; a little bit more specific
+    # than "\w"
     amino_acids = [
             'A', 'R', 'N', 'D', 'C', 'Q', 'E', 'G', 'H', 'I', 'L', 'K', 'M',
             'F', 'P', 'S', 'T', 'W', 'Y', 'V'
