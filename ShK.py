@@ -97,31 +97,6 @@ class SearchParse(PepFile):
 
     }}} """
 
-    # {{{ SearchPattern
-    # First, must define serach pattern
-    # All possible values in peptide sequence; a little bit more specific
-    # than "\w"
-    amino_acids = [
-            'A', 'R', 'N', 'D', 'C', 'Q', 'E', 'G', 'H', 'I', 'L', 'K', 'M',
-            'F', 'P', 'S', 'T', 'W', 'Y', 'V'
-            ]
-    # "|" in regular expression speak means "or"
-    amino_acids = '|'.join(amino_acids)
-    # In regular expression speak, "{m}" means "match exactly this number of
-    # the preceding expression", "+" means "match 1 or more repetitions of
-    # preceding expression", and {m,n} means "match m through n repetitions of
-    # preceding expression, attempting to match as many as possible"
-    # ::MODIFIABLE::
-    # NOTE: If you would like to search further upstream for preceding
-    # cysteines, simply modify second integer in {1,50}
-    ShK_domain = (
-            'C[' + amino_acids + ']+C[' + amino_acids + ']+C[' + amino_acids +
-            ']{1,50}C[' + amino_acids + ']{3}C[' + amino_acids + ']{2}C'
-            )
-    # Compile into pattern re.findall can utilize
-    ShK_domain = re.compile(ShK_domain)
-    # }}}
-
     # {{{ search_the_6_Cs (Arr, matey)
     def search_the_6_Cs(self, pep_seq):
 
@@ -133,8 +108,35 @@ class SearchParse(PepFile):
 
         }}} """
 
+        # {{{ SearchPattern
+        # First, must define serach pattern
+        # All possible values in peptide sequence; a little bit more specific
+        # than "\w"
+        amino_acids = [
+                'A', 'R', 'N', 'D', 'C', 'Q', 'E', 'G', 'H', 'I', 'L', 'K',
+                'M', 'F', 'P', 'S', 'T', 'W', 'Y', 'V'
+                ]
+        # "|" in regular expression speak means "or"
+        amino_acids = '|'.join(amino_acids)
+        # In regular expression speak, "{m}" means "match exactly this number
+        # of the preceding expression", "+" means "match 1 or more repetitions
+        # of preceding expression", and {m,n} means "match m through n
+        # repetitions of preceding expression, attempting to match as many as
+        # possible"
+        # ::MODIFIABLE::
+        # NOTE: If you would like to search further upstream for preceding
+        # cysteines, simply modify second integer in {1,50}
+        ShK_domain = (
+                'C[' + amino_acids + ']+C[' + amino_acids + ']+C[' +
+                amino_acids + ']{1,50}C[' + amino_acids + ']{3}C[' +
+                amino_acids + ']{2}C'
+                )
+        # Compile into pattern re.findall can utilize
+        ShK_domain = re.compile(ShK_domain)
+        # }}}
+
         # Does peptide sequence contain ShK domain?
-        putative_ShK_domains = re.findall(SearchParse.ShK_domain, pep_seq)
+        putative_ShK_domains = re.findall(ShK_domain, pep_seq)
         # If matches found, return list of all matches (as strings)
         if putative_ShK_domains:
             return putative_ShK_domains
