@@ -128,7 +128,8 @@ class SearchParse(PepFile):
         """ {{{ Docstrings
 
         Utilizing regular expressions (as provided by the "re" python module),
-        searches a peptide sequence for the pattern: ShK domain.
+        searches a peptide sequence for occurrences of the ShK domain as
+        previously defined.
 
         }}} """
 
