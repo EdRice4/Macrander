@@ -233,6 +233,8 @@ args = arg_parser.parse_args()
 
 
 # {{{ Batch
+# Instantiate instance of Data class with every pep file in directory if user
+# specified batch flag
 if args.batch:
     # Get current working directory
     cwd = getcwd()
@@ -241,16 +243,20 @@ if args.batch:
     # Filter out pep files
     # NOTE: All files you wish to run should contain the string '.pep' in the
     # name and all files containing this string will be run if you specify
-    # the batch flag.
+    # the batch flag
     pep_files = [x for x in files if '.pep' in x]
     # Instantiate intances of Data calss for all pep files found
     for i in pep_files:
         Data(i)
+# Else, utilize user-specified string to instantiate single instance of Data
+# class
 else:
+    # Exit if no proper file specified
     if not args.pep_file:
         sys.exit(
                 'You did not specify a pep file to run nor did you run the '
                 'script in batch mode. Try again.'
                 )
+    # Else, continue
     Data(args.pep_file)
 # }}}
