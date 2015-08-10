@@ -104,7 +104,7 @@ class SearchParse(PepFile):
 
         Utilizing regular expressions (as provided by the "re" python module),
         searches a peptide sequence for occurrences of the ShK domain as
-        previously defined.
+        defined below.
 
         }}} """
 
