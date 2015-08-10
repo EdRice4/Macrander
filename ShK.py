@@ -47,11 +47,11 @@ class PepFile(object):
         with open(pep_file, 'r') as pep:
                 pep = pep.readlines()
         # Filter out IDs
-        ids = [line for line in pep if line[0] == '>']
+        Pep_IDs = [line for line in pep if line[0] == '>']
         # Filter out peptide sequences
-        seqs = [line for line in pep if line[0] != '>']
+        Pep_seqs = [line for line in pep if line[0] != '>']
         # Concatenate into dictionary
-        pep_dict = dict(zip(ids, seqs))
+        pep_dict = dict(zip(Pep_IDs, Pep_seqs))
         return pep_dict
     # }}}
 
@@ -72,7 +72,8 @@ class PepFile(object):
             for k, v in self._filtered_pep_dict.iteritems():
                 # Set values for readability
                 Pep_ID = k
-                # Values must be a string in order to write
+                # Handle addition of newline character in manner contingent
+                # upon length; improve readability when writing
                 # If only one match returned, append newline "\n" character
                 if len(v) == 1:
                     Pep_seq = v[0] + '\n'
