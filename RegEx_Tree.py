@@ -1,7 +1,7 @@
-# {{{ Header
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+# {{{ Header
 # Code written by: Edwin Rice
 # email: edwinricethe4th@gmail.com
 # phone: +1 (513) 426-4187
