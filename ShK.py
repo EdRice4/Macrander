@@ -156,8 +156,8 @@ class SearchParse(PepFile):
 
         }}} """
 
-        # Initialze empty dictionary where peptide sequences containing the
-        # aforementioned pattern will be stored
+        # Initialze empty dictionary where peptide sequences containing at
+        # at least one occurrence of the ShK domain will be stored
         filtered_pep_dict = {}
         # Itereate over keys, values in pep_dict
         for k, v in self._pep_dict.iteritems():
