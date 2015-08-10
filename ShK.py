@@ -118,7 +118,7 @@ class SearchParse(PepFile):
             'C[' + amino_acids + ']+C[' + amino_acids + ']+C[' + amino_acids +
             ']{1,50}C[' + amino_acids + ']{3}C[' + amino_acids + ']{2}C'
             )
-    # Compile into pattern re.search can utilize
+    # Compile into pattern re.findall can utilize
     ShK_domain = re.compile(ShK_domain)
     # }}}
 
