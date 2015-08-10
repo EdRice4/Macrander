@@ -152,7 +152,7 @@ class SearchParse(PepFile):
 
         Utilizing previous function, search_the_6_Cs, filters peptide
         sequences, only keeping those which return a TRUE value (i.e. contain
-        the aforementioned pattern).
+        at least one occurrence the ShK domain).
 
         }}} """
 
