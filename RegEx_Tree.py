@@ -227,7 +227,3 @@ else:
                 )
     TreFile(args.tre_file, args.dict_file)
 # }}}
-
-for tre in TreFile:
-    sub_tre_file = tre.substitute()
-    tre.write_tre_file(sub_tre_file)
