@@ -77,7 +77,7 @@ class FileIO(object):
     # }}}
 
     # {{{ write_tree_file
-    def write_tree_file(self, sub_tre_file):
+    def write_tree_file(self, subbed_tree_file):
 
         """ {{{ Docstrings
 
@@ -88,7 +88,7 @@ class FileIO(object):
         # Open file in write mode
         with open(self.new_tre_file, 'w') as new_tree_file:
             # Write to file
-            new_tree_file.write(sub_tre_file)
+            new_tree_file.write(subbed_tree_file)
     # }}}
 # }}}
 
@@ -119,10 +119,10 @@ class RegEx(FileIO):
                 '|'.join(self._dict.iterkeys())
                 )
         # Perform substitution
-        sub_tree_file = substitute_ID_pattern.sub(
+        subbed_tree = substitute_ID_pattern.sub(
                 lambda match: self._dict[re.escape(match.group())], self.tree
                 )
-        return sub_tree_file
+        return subbed_tree
 # }}}
 
 
@@ -141,7 +141,7 @@ class TreFile(RegEx):
         self._tree = self.read_tree_file(tree_file)
         self._dict = self.read_dict_file(dict_file)
         self._sub_tree_file = self._tree.replace('.tre', '_subbed.tre')
-        self._sub_tree = self.substitute()
+        self._subbed_tree = self.substitute()
         self.write_tree_file()
     # }}}
 # }}}
