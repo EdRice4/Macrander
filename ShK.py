@@ -15,7 +15,7 @@
 from os import getcwd, listdir
 import re
 import argparse
-import sys
+from sys import exit
 # }}}
 
 
@@ -245,7 +245,7 @@ if args.batch:
     # name and all files containing this string will be run if you specify
     # the batch flag
     pep_files = [x for x in files if '.pep' in x]
-    # Instantiate intances of Data calss for all pep files found
+    # Instantiate intances of Data class for all pep files found
     for i in pep_files:
         Data(i)
 # Else, utilize user-specified string to instantiate single instance of Data
@@ -253,7 +253,7 @@ if args.batch:
 else:
     # Exit if no proper file specified
     if not args.pep_file:
-        sys.exit(
+            exit(
                 'You did not specify a pep file to run nor did you run the '
                 'script in batch mode. Try again.'
                 )
