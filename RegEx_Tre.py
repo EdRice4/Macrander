@@ -14,7 +14,6 @@
 # {{{ Imports
 from os import getcwd, listdir
 import re
-from numpy import loadtxt
 import argparse
 from sys import exit
 # }}}
@@ -29,7 +28,56 @@ class FileIO(object):
 
     }}} """
 
-    def write_tre_file(self, sub_tre_file):
+    # {{{ read_tree_file
+    def read_tree_file(self, tree_file):
+
+        """ {{{ Docstrings
+
+        Reads a tree file into a string.
+
+        }}} """
+
+        # Open file in read mode
+        with open(tree_file, 'r') as tree:
+            # Read in as one, long string
+            tree = tree.read()
+        return tree
+    # }}}
+
+    # {{{ read_dict_file
+    def read_dict_file(self, dict_file):
+
+        """ {{{ Docstrings
+
+        Reads a dictionary file into a dictionary with the format:
+
+            dictionary = {
+
+                'Substitute ID' : 'Original ID'
+
+                }
+
+        """
+
+        # Initiate empty dictionary to store IDs
+        IDs = {}
+        # Open file in read mode
+        with open(dict_file, 'r') as dictionary:
+            dictionary = dict_file.readlines()
+        for line in dictionary:
+            # Partition line into two values, based on location of tab "\t"
+            # character
+            line = line.split('\t')
+            # Set values for readability
+            Substitute_ID = line[0]
+            Original_ID = line[1]
+            # Add to dictionary
+            IDs[Substitute_ID] = Original_ID
+        return IDs
+    # }}}
+
+    # {{{ write_tree_file
+    def write_tree_file(self, sub_tre_file):
 
         """ {{{ Docstrings
 
@@ -39,6 +87,7 @@ class FileIO(object):
 
         with open(self.new_tre_file, 'w') as new_tree_file:
             new_tree_file.write(sub_tre_file)
+    # }}}
 
 
 # {{{ RegEx
@@ -56,6 +105,7 @@ class RegEx(FileIO):
         sub_tre_file = pattern.sub(lambda m: replace[re.escape(m.group(0))],
                                    self.tre)
         return sub_tre_file
+# }}}
 
 
 class IterRegistry(type):
@@ -78,11 +128,9 @@ class TreFile(RegEx):
     __metaclass__ = IterRegistry
     registry = []
 
-    def __init__(self, tre_file, dict_file):
-        with open(tre_file, 'r') as tre:
-            self.tre = tre.read()
-        with open(dict_file, 'r') as dfile:
-            self.dfile = loadtxt(dfile, dtype=str, delimiter='\t')
+    def __init__(self, tree_file, dict_file):
+        self._tree = self.read_tree_file(tree_file)
+        self._dict = self.read_dict_file(dict_file)
         self.new_tre_file = tre_file.replace('.tre', '_subbed.tre')
         self.registry.append(self)
 
