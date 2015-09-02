@@ -28,7 +28,21 @@ class IDSeq(object):
 
     }}} """
 
-    def generate_original_ids_and_seqs(self, fasta_file):
+    # {{{ __init__
+    def __init__(self, fasta_file):
+
+        """ {{{ Docstrings
+
+        Upon instantiation of FastaFile instance, run all pertinent
+        functions.
+
+        }}} """
+
+        self._seq_dict = self.get_original_data(fasta_file)
+    # }}}
+
+    # {{{ get_original_data
+    def get_original_data(self, fasta_file):
 
         """ {{{ Docstrings
 
@@ -86,8 +100,9 @@ class PhylipFile(IDSeq):
 
         }}} """
 
-        with open(self.original_phylip_name, 'w') as phy:
-            for i, j in zip(self.identities, self.sequences):
+        # Open original phylip file in write mode
+        with open(self._original_phylip_name, 'w') as phy:
+            for k, v in self._seq_dict.iteritems():
                 phy.write(i + '\t' + j + '\n')
     # }}}
 
@@ -101,12 +116,12 @@ class PhylipFile(IDSeq):
 
         }}} """
 
-        with open(self.original_phylip_name, 'w') as phy:
-            for i, j in zip(self.identities, self.sequences):
+        with open(self._original_phylip_name, 'w') as phy:
+            for i, j in zip(self._identities, self._sequences):
                 phy.write(i + '\t' + j[0:50] + '\n')
             phy.write('\n')
-            for i in range(50, len(self.sequences[0]), 50):
-                for j in self.sequences:
+            for i in range(50, len(self._sequences[0]), 50):
+                for j in self._sequences:
                     phy.write(j[i:i + 50] + '\n')
                 phy.write('\n')
     # }}}
@@ -121,8 +136,8 @@ class PhylipFile(IDSeq):
 
         }}} """
 
-        with open(self.original_phylip_name, 'w') as phy:
-            for i, j in zip(self.identities, self.sequences):
+        with open(self._original_phylip_name, 'w') as phy:
+            for i, j in zip(self._identities, self._sequences):
                 phy.write(i + '\t' + j + '\n')
     # }}}
 
@@ -136,13 +151,13 @@ class PhylipFile(IDSeq):
 
         }}} """
 
-        with open(self.unique_phylip_name, 'w') as phy:
-            for i, j in zip(self.unique_identities.itervalues(),
-                            self.sequences):
+        with open(self._unique_phylip_name, 'w') as phy:
+            for i, j in zip(self._unique_identities.itervalues(),
+                            self._sequences):
                 phy.write(str(i) + '\t' + j[0:50] + '\n')
             phy.write('\n')
-            for i in range(50, len(self.sequences[0]), 50):
-                for j in self.sequences:
+            for i in range(50, len(self._sequences[0]), 50):
+                for j in self._sequences:
                     phy.write(j[i:i + 50] + '\n')
                 phy.write('\n')
     # }}}
@@ -183,8 +198,8 @@ class DictionaryFile(PhylipFile):
         The unique IDs are generated and stored in a dictionary.
         }}} """
 
-        for i in self.identities:
-            self.unique_identities[randrange(0, 9999999)] = i
+        for i in self._identities:
+            self._unique_identities[randrange(0, 9999999)] = i
     # }}}
 
     # {{{ write_dictionary
@@ -194,8 +209,8 @@ class DictionaryFile(PhylipFile):
         The unique and original IDs are written to a file.
         }}} """
 
-        with open(self.dictionary_name, 'w') as dfile:
-            for key, value in self.unique_identities.iteritems():
+        with open(self._dictionary_name, 'w') as dfile:
+            for key, value in self._unique_identities.iteritems():
                 dfile.write(str(key) + '\t' + value + '\n')
     # }}}
 # }}}
@@ -205,28 +220,27 @@ class DictionaryFile(PhylipFile):
 class FastaFile(DictionaryFile):
 
     """ {{{ Docstrings
+
     A class in which all of the necessary parameters corresponding to each
     respective fasta file are stored.
-
-
-    Namely:
-
-        1.) The sequences IDs are stored in a list, self.identities.
-
-        2.) The sequences themselves are stored in a list, self.sequences.
-
-        3.) Randomly generated unique identities (see generate_unique_ids) are
-            stored in a dictionary, self.unique_identities.
 
     }}} """
 
     # {{{ __init__
     def __init__(self, fasta_file):
+
+        """ {{{ Docstrings
+
+        Upon instantiation of FastaFile instance, run all pertinent
+        functions.
+
+        }}} """
+
         self._path = fasta_file
-        self._original_phylip_name = self.path.replace(
+        self._original_phylip_name = self._path.replace(
                 '.fasta', '_original.phylip'
                 )
-        self._unique_phylip_name = self.path.replace(
+        self._unique_phylip_name = self._path.replace(
                 '.fasta', '_unique.phylip'
                 )
         self._dictionary_name = self._path.replace('.fasta', '.txt')
@@ -286,7 +300,7 @@ else:
 
 # {{{ Run
 for fasta in FastaFile:
-    fasta.generate_original_ids_and_seqs()
+    fasta.get_original_data()
     fasta.generate_unique_ids()
     if args.sequential:
         print(
