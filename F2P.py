@@ -26,24 +26,32 @@ class IDSeq(object):
 
     A class in which the fasta file is read.
 
-    Namely:
-
-            1.) Two lists are generated; one containing each identifier and
-                the other containing each corresponding sequence.
-
     }}} """
 
-    def generate_original_ids_and_seqs(self):
+    def generate_original_ids_and_seqs(self, fasta_file):
 
         """ {{{ Docstrings
-        Reads fasta file into list.
+
+        Reads fasta file into dictionary, whose keys are the original sequence
+        identifiers and values are the corresponding sequences, given the
+        name of the fasta file as a string.
+
         }}} """
 
-        for i in self.fasta_file:
-            if i[0] == '>':
-                self.identities.append(i.strip('>\r\n'))
-            else:
-                self.sequences.append(i.strip())
+        # Open fasta file in read mode
+        with open(fasta_file, 'r') as fasta:
+            # Read into list
+            fasta = fasta.readlines()
+        # Filter out sequence IDs and strip each entry of leading/trailing
+        # whitespace
+        # TODO: Remove greater than (">") symbol?
+        seq_IDs = [line.strip() for line in fasta if line[0] == '>']
+        # Filter out nucleotide sequences and strip each entry of
+        # leading/trailing whitespace
+        seqs = [line.strip() for line in fasta if line[0] != '>']
+        # Concatenate into dictionary
+        seq_dict = dict(zip(seq_IDs, seqs))
+        return seq_dict
 # }}}
 
 
@@ -72,7 +80,10 @@ class PhylipFile(IDSeq):
     def write_original_phylip_file_sequential(self):
 
         """ {{{ Docstrings
-        The original phylip file is written in sequential format.
+
+        A phylip file containing the original sequence identifiers is written
+        in sequential format.
+
         }}} """
 
         with open(self.original_phylip_name, 'w') as phy:
@@ -84,7 +95,10 @@ class PhylipFile(IDSeq):
     def write_original_phylip_file_interleaved(self):
 
         """ {{{ Docstrings
-        The original phylip file is writtin in interleaved format.
+
+        A phylip file containing the original sequence identifiers is written
+        in interleaved format.
+
         }}} """
 
         with open(self.original_phylip_name, 'w') as phy:
@@ -101,7 +115,10 @@ class PhylipFile(IDSeq):
     def write_unique_phylip_file_sequential(self):
 
         """ {{{ Docstrings
-        The unique phylip file is written in sequential format.
+
+        A phylip file containing the unique sequence identifiers is written
+        in sequential format.
+
         }}} """
 
         with open(self.original_phylip_name, 'w') as phy:
@@ -113,7 +130,10 @@ class PhylipFile(IDSeq):
     def write_unique_phylip_file_interleaved(self):
 
         """ {{{ Docstrings
-        The unique phylip file is written in interleaved format.
+
+        A phylip file containing the unique sequence identifiers is written
+        in interleaved format.
+
         }}} """
 
         with open(self.unique_phylip_name, 'w') as phy:
@@ -181,20 +201,6 @@ class DictionaryFile(PhylipFile):
 # }}}
 
 
-# {{{ IterRegistry
-class IterRegistry(type):
-
-    """ {{{ Docstrings
-    A metaclass to allow for iteration of instances of the FastaFile class.
-    }}} """
-
-    # {{{ __iter__
-    def __iter__(cls):
-        return iter(cls.registry)
-    # }}}
-# }}}
-
-
 # {{{ FastaFile
 class FastaFile(DictionaryFile):
 
@@ -214,25 +220,16 @@ class FastaFile(DictionaryFile):
 
     }}} """
 
-    # {{{ __metaclass__
-    __metaclass__ = IterRegistry
-    registry = []
-    # }}}
-
     # {{{ __init__
     def __init__(self, fasta_file):
-        self.path = fasta_file
-        with open(self.path, 'r') as phy:
-            self.fasta_file = phy.readlines()
-        self.original_phylip_name = self.path.replace('.fasta',
-                                                      '_original.phylip')
-        self.unique_phylip_name = self.path.replace('.fasta',
-                                                    '_unique.phylip')
-        self.dictionary_name = self.path.replace('.fasta', '.txt')
-        self.identities = []
-        self.sequences = []
-        self.unique_identities = {}
-        self.registry.append(self)
+        self._path = fasta_file
+        self._original_phylip_name = self.path.replace(
+                '.fasta', '_original.phylip'
+                )
+        self._unique_phylip_name = self.path.replace(
+                '.fasta', '_unique.phylip'
+                )
+        self._dictionary_name = self._path.replace('.fasta', '.txt')
     # }}}
 # }}}
 
@@ -255,7 +252,9 @@ arg_parser = argparse.ArgumentParser(
         formatter_class=argparse.ArgumentDefaultsHelpFormatter
         )
 arg_parser.add_argument(
-        'fasta_file', type=str, help='Name of fasta sequence to be converted.',
+        '-f', '--fasta_file', type=str, help=(
+                'Name of fasta sequence to be converted.'
+                ),
         default=None
         )
 arg_parser.add_argument(
