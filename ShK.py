@@ -47,10 +47,11 @@ class PepFile(object):
         # Read in pep file
         with open(pep_file, 'r') as pep:
                 pep = pep.readlines()
-        # Filter out IDs
-        Pep_IDs = [line for line in pep if line[0] == '>']
-        # Filter out peptide sequences
-        Pep_seqs = [line for line in pep if line[0] != '>']
+        # Filter out IDs and strip each entry of leading/trailing whitespace
+        Pep_IDs = [line.strip() for line in pep if line[0] == '>']
+        # Filter out peptide sequences and strip each entry of
+        # leading/trailing whitespace
+        Pep_seqs = [line.strip() for line in pep if line[0] != '>']
         # Concatenate into dictionary
         pep_dict = dict(zip(Pep_IDs, Pep_seqs))
         return pep_dict
@@ -195,7 +196,7 @@ class Data(SearchParse):
 # }}}
 
 
-# {{{ ArgParse
+# {{{ Main argument parser
 arg_parser = argparse.ArgumentParser(
         prog='ShK.py',
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -218,7 +219,9 @@ arg_parser = argparse.ArgumentParser(
                 )
         )
 arg_parser.add_argument(
-        '-pep_file', type=str, help='Name of pep file you wish to run.',
+        '-pep_file', type=str, help=(
+                'Name of pep file you wish to run.'
+                ),
         default=None
         )
 arg_parser.add_argument(
