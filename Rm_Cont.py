@@ -94,6 +94,7 @@ class FastaFile(FileIO):
     # }}}
 # }}}
 
+
 # {{{ ArgParser
 arg_parser = argparse.ArgumentParser(
         prog='Remove_Contaminants.py',

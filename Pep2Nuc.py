@@ -180,7 +180,7 @@ class DataParse(ExtractData):
             seq = fd[i[0]]
             # Build filtered fasta dictionary
             ffd[seq_id] = map(
-                    lambda x: rev_compl(x, seq), i[1]
+                    lambda x: DataParse.rev_compl(x, seq), i[1]
                     )
         return ffd
     # }}}

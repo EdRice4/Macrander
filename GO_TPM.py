@@ -161,8 +161,8 @@ class DataParse(FileIO):
             go_dict = dict((i[0], i[1].split('`')) for i in f)
             return go_dict
         else:
-            tmp_dict = dict((i[0], int(i[1])) for i in f)
-            return tmp_dict
+            tpm_dict = dict((i[0], int(i[1])) for i in f)
+            return tpm_dict
     # }}}
 
     # {{{ filter_GO_dict
